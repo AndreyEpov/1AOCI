@@ -28,7 +28,7 @@ namespace _1Laba
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             var result = openFileDialog.ShowDialog(); // открытие диалога выбора файла
             if (result == DialogResult.OK) // открытие выбранного файла
@@ -47,7 +47,7 @@ namespace _1Laba
 
             var tempImage = grayImage.PyrDown();
             var destImage = tempImage.PyrUp();
-            
+
             double cannyThreshold = 80.0;
             double cannyThresholdLinking = 40.0;
             Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
@@ -88,7 +88,7 @@ namespace _1Laba
                 string fileName = openFileDialog.FileName;
                 capture = new VideoCapture(fileName);
                 timer1.Enabled = true;
-               // timer1.Interval = (int)capture.GetCaptureProperty(CapProp.XiFramerate);
+                // timer1.Interval = (int)capture.GetCaptureProperty(CapProp.XiFramerate);
 
             }
 
@@ -97,13 +97,45 @@ namespace _1Laba
         private void timer1_Tick(object sender, EventArgs e)
         {
             var frame = capture.QueryFrame();
-            imageBox2.Image = frame;
+            Image<Bgr, byte> firstImage = frame.ToImage<Bgr, byte>();
+            Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
+
+            var tempImage = grayImage.PyrDown();
+            var destImage = tempImage.PyrUp();
+
+            double cannyThreshold = 80.0;
+            double cannyThresholdLinking = 40.0;
+            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
+
+            var cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
+            var resultImage = firstImage.Sub(cannyEdgesBgr); // попиксельное вычитание
+
+            //обход по каналам
+            for (int channel = 0; channel < resultImage.NumberOfChannels; channel++)
+                for (int x = 0; x < resultImage.Width; x++)
+                    for (int y = 0; y < resultImage.Height; y++) // обход по пискелям
+                    {
+                        // получение цвета пикселя
+                        byte color = resultImage.Data[y, x, channel];
+                        if (color <= 50)
+                            color = 0;
+                        else if (color <= 100)
+                            color = 25;
+                        else if (color <= 150)
+                            color = 180;
+                        else if (color <= 200)
+                            color = 210;
+                        else
+                            color = 255;
+                        resultImage.Data[y, x, channel] = color; // изменение цвета пикселя
+                    }
+            imageBox2.Image = resultImage;
             frameCounter++;
-            if (frameCounter>= capture.GetCaptureProperty(CapProp.FrameCount))
+            if (frameCounter >= capture.GetCaptureProperty(CapProp.FrameCount))
             {
                 timer1.Enabled = false;
             }
-            
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -121,8 +153,8 @@ namespace _1Laba
         }
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {            
-           cannyThreshold += e.OldValue - e.NewValue;
+        {
+            cannyThreshold += e.OldValue - e.NewValue;
             Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
 
             var tempImage = grayImage.PyrDown();
@@ -164,8 +196,8 @@ namespace _1Laba
         }
 
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {            
-           cannyThresholdLinking += e.OldValue - e.NewValue;
+        {
+            cannyThresholdLinking += e.OldValue - e.NewValue;
             Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
 
             var tempImage = grayImage.PyrDown();
@@ -213,6 +245,11 @@ namespace _1Laba
             imageBox2.Image = null;
             imageBox2.ClearOperation();
             imageBox1.ClearOperation();
+
+        }
+
+        private void imageBox2_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,12 @@ namespace _1Laba
         private Image<Bgr, byte> sourceImage;
         private VideoCapture capture;
 
-        public void openImage(ImageBox imageBox1, int x, int y) // x y - size of image 
+        //public SourceImage GetImageBox()
+        //{
+            
+        //}
+
+        public void openImage(ImageBox imageBox1, int x=480, int y=640) // x y - size of image 
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "image Files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif;*.png";
@@ -30,7 +36,7 @@ namespace _1Laba
             }
 
         }
-        public void openVideo(ImageBox imageBox1, int x, int y) // x y - size of image 
+        public void openVideo(ImageBox imageBox1, int x = 480, int y = 640) // x y - size of image 
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "video Files(*.MP4)| *.MP4;";
