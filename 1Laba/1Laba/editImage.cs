@@ -30,7 +30,7 @@ namespace _1Laba
             Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
             return cannyEdges;
         }
-        public Image<Bgr, byte> thresholdFilter(Image<Bgr, byte> sourceImage, double value1, double value2)
+        public Image<Bgr, byte> thresholdFilter(Image<Bgr, byte> sourceImage, double value1, double value2,int tb1, int tb2, int tb3, int tb4)
         {
             Image<Gray, byte> cannyEdges = filterCanny(sourceImage, value1, value2);
             Image<Bgr, byte> cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
@@ -42,13 +42,13 @@ namespace _1Laba
                     {
                         // получение цвета пикселя
                         byte color = resultImage.Data[y, x, channel];
-                        if (color <= 50)
+                        if (color <= tb1)
                             color = 0;
-                        else if (color <= 100)
+                        else if (color <= tb2)
                             color = 25;
-                        else if (color <= 150)
+                        else if (color <= tb3)
                             color = 180;
-                        else if (color <= 200)
+                        else if (color <= tb4)
                             color = 210;
                         else
                             color = 255;

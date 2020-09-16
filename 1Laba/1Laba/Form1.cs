@@ -22,6 +22,7 @@ namespace _1Laba
         double cannyThresholdLinking;
         int choice = 0;
         editImage newImage = new editImage();
+        private int tb1, tb2 , tb3, tb4;
         public Form1()
         {
             InitializeComponent();
@@ -77,7 +78,7 @@ namespace _1Laba
             if (choice == 1)
                 imageBox2.Image = newImage.filterCanny(firstImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
             if (choice == 2)
-                imageBox2.Image = newImage.thresholdFilter(firstImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
+                imageBox2.Image = newImage.thresholdFilter(firstImage, cannyThreshold, cannyThresholdLinking, tb1, tb2, tb3, tb4).Resize(640, 480, Inter.Linear);
             if (choice == 3)
                 imageBox2.Image = firstImage;
 
@@ -116,6 +117,21 @@ namespace _1Laba
 
         }
 
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            tb2 = trackBar2.Value;
+        }
+
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            tb3 = trackBar3.Value;
+        }
+
+        private void trackBar4_Scroll(object sender, EventArgs e)
+        {
+            tb4 = trackBar4.Value;
+        }
+
         private void imageBox2_Click(object sender, EventArgs e)
         {
 
@@ -128,8 +144,13 @@ namespace _1Laba
             if (choice == 1)
                 imageBox2.Image = newImage.filterCanny(sourceImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
             if(choice == 2)
-                imageBox2.Image = newImage.thresholdFilter(sourceImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
+                imageBox2.Image = newImage.thresholdFilter(sourceImage, cannyThreshold, cannyThresholdLinking, tb1,tb2,tb3,tb4).Resize(640, 480, Inter.Linear);
 
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+             tb1 = trackBar1.Value;
         }
     }
 }
