@@ -14,67 +14,27 @@ namespace _1Laba
 {
     public class editImage
     {
-        private Image<Bgr, byte> sourceImage;
-        private VideoCapture capture;
-
-        //public SourceImage GetImageBox()
-        //{
-            
-        //}
-
-        public void openImage(ImageBox imageBox1, int x=480, int y=640) // x y - size of image 
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "image Files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif;*.png";
-            var result = openFileDialog.ShowDialog(); // открытие диалога выбора файла
-            if (result == DialogResult.OK) // открытие выбранного файла
-            {
-                string fileName = openFileDialog.FileName;
-                sourceImage = new Image<Bgr, byte>(fileName);
-                imageBox1.Image = sourceImage.Resize(y, x, Inter.Linear);
-                
-            }
-
-        }
-        public void openVideo(ImageBox imageBox1, int x = 480, int y = 640) // x y - size of image 
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "video Files(*.MP4)| *.MP4;";
-            var result = openFileDialog.ShowDialog(); // открытие диалога выбора файла
-            if (result == DialogResult.OK) // открытие выбранного файла
-            {
-                string fileName = openFileDialog.FileName;
-                capture = new VideoCapture(fileName);
-                //timer1.Enabled = true;
-
-            }
-
-        }
-        public void filterCanny(ImageBox imageBox1,double a, double b)
+        public Image<Gray, byte> editGray(Image<Bgr, byte> sourceImage)
         {
             Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
 
-            var tempImage = grayImage.PyrDown();
-            var destImage = tempImage.PyrUp();
-
-            double cannyThreshold = a;
-            double cannyThresholdLinking = b;
-            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-            imageBox1.Image = cannyEdges.Resize(640, 480, Inter.Linear);
-        }
-        public void thresholdFilter(ImageBox imageBox1, double a, double b)
+            return grayImage;
+        }   
+        public Image<Gray, byte> filterCanny(Image<Bgr, byte> sourceImage, double value1, double value2)
         {
-            Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
-
+            Image<Gray, byte> grayImage = editGray(sourceImage);
             var tempImage = grayImage.PyrDown();
             var destImage = tempImage.PyrUp();
-            double cannyThreshold = a;
-            double cannyThresholdLinking = b;
+            double cannyThreshold = value1;
+            double cannyThresholdLinking = value2;
             Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-
-            var cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
-            var resultImage = sourceImage.Sub(cannyEdgesBgr); // попиксельное вычитание
-
+            return cannyEdges;
+        }
+        public Image<Bgr, byte> thresholdFilter(Image<Bgr, byte> sourceImage, double value1, double value2)
+        {
+            Image<Gray, byte> cannyEdges = filterCanny(sourceImage, value1, value2);
+            Image<Bgr, byte> cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
+            Image<Bgr, byte> resultImage = sourceImage.Sub(cannyEdgesBgr);
             //обход по каналам
             for (int channel = 0; channel < resultImage.NumberOfChannels; channel++)
                 for (int x = 0; x < resultImage.Width; x++)
@@ -95,7 +55,7 @@ namespace _1Laba
                         resultImage.Data[y, x, channel] = color; // изменение цвета пикселя
                     }
 
-            imageBox1.Image = resultImage.Resize(640, 480, Inter.Linear);
+            return resultImage;
         }
 
     }

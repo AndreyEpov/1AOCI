@@ -20,7 +20,8 @@ namespace _1Laba
         private int frameCounter = 0;
         double cannyThreshold;
         double cannyThresholdLinking;
-        bool treshhold;
+        int choice = 0;
+        editImage newImage = new editImage();
         public Form1()
         {
             InitializeComponent();
@@ -28,58 +29,30 @@ namespace _1Laba
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            choice = 0;
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif;*.png";
             var result = openFileDialog.ShowDialog(); // открытие диалога выбора файла
             if (result == DialogResult.OK) // открытие выбранного файла
             {
                 string fileName = openFileDialog.FileName;
                 sourceImage = new Image<Bgr, byte>(fileName);
-                imageBox1.Image = sourceImage.Resize(640, 480, Inter.Linear);
+                imageBox1.Image = sourceImage.Resize(640, 480, Inter.Linear); 
+                imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear); 
+                timer2.Enabled = true;
             }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            treshhold = true;
-            Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
-
-            var tempImage = grayImage.PyrDown();
-            var destImage = tempImage.PyrUp();
-
-            double cannyThreshold = 80.0;
-            double cannyThresholdLinking = 40.0;
-            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-
-            var cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
-            var resultImage = sourceImage.Sub(cannyEdgesBgr); // попиксельное вычитание
-
-            //обход по каналам
-            for (int channel = 0; channel < resultImage.NumberOfChannels; channel++)
-                for (int x = 0; x < resultImage.Width; x++)
-                    for (int y = 0; y < resultImage.Height; y++) // обход по пискелям
-                    {
-                        // получение цвета пикселя
-                        byte color = resultImage.Data[y, x, channel];
-                        if (color <= 50)
-                            color = 0;
-                        else if (color <= 100)
-                            color = 25;
-                        else if (color <= 150)
-                            color = 180;
-                        else if (color <= 200)
-                            color = 210;
-                        else
-                            color = 255;
-                        resultImage.Data[y, x, channel] = color; // изменение цвета пикселя
-                    }
-
-            imageBox2.Image = resultImage.Resize(640, 480, Inter.Linear);
+            choice = 1;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            choice = 3;
+            timer2.Enabled = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "video Files(*.MP4)| *.MP4;";
             var result = openFileDialog.ShowDialog(); // открытие диалога выбора файла
@@ -88,7 +61,6 @@ namespace _1Laba
                 string fileName = openFileDialog.FileName;
                 capture = new VideoCapture(fileName);
                 timer1.Enabled = true;
-                // timer1.Interval = (int)capture.GetCaptureProperty(CapProp.XiFramerate);
 
             }
 
@@ -98,39 +70,18 @@ namespace _1Laba
         {
             var frame = capture.QueryFrame();
             Image<Bgr, byte> firstImage = frame.ToImage<Bgr, byte>();
-            Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
+            imageBox2.Image = firstImage;
 
-            var tempImage = grayImage.PyrDown();
-            var destImage = tempImage.PyrUp();
+            if (choice == 0)
+                imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear);
+            if (choice == 1)
+                imageBox2.Image = newImage.filterCanny(firstImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
+            if (choice == 2)
+                imageBox2.Image = newImage.thresholdFilter(firstImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
+            if (choice == 3)
+                imageBox2.Image = firstImage;
 
-            double cannyThreshold = 80.0;
-            double cannyThresholdLinking = 40.0;
-            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-
-            var cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
-            var resultImage = firstImage.Sub(cannyEdgesBgr); // попиксельное вычитание
-
-            //обход по каналам
-            for (int channel = 0; channel < resultImage.NumberOfChannels; channel++)
-                for (int x = 0; x < resultImage.Width; x++)
-                    for (int y = 0; y < resultImage.Height; y++) // обход по пискелям
-                    {
-                        // получение цвета пикселя
-                        byte color = resultImage.Data[y, x, channel];
-                        if (color <= 50)
-                            color = 0;
-                        else if (color <= 100)
-                            color = 25;
-                        else if (color <= 150)
-                            color = 180;
-                        else if (color <= 200)
-                            color = 210;
-                        else
-                            color = 255;
-                        resultImage.Data[y, x, channel] = color; // изменение цвета пикселя
-                    }
-            imageBox2.Image = resultImage;
-            frameCounter++;
+           frameCounter++;
             if (frameCounter >= capture.GetCaptureProperty(CapProp.FrameCount))
             {
                 timer1.Enabled = false;
@@ -140,103 +91,17 @@ namespace _1Laba
 
         private void button4_Click(object sender, EventArgs e)
         {
-            treshhold = false;
-            Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
-
-            var tempImage = grayImage.PyrDown();
-            var destImage = tempImage.PyrUp();
-
-            cannyThreshold = 80.0;
-            cannyThresholdLinking = 40.0;
-            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-            imageBox2.Image = cannyEdges.Resize(640, 480, Inter.Linear);
+            choice = 2;
         }
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             cannyThreshold += e.OldValue - e.NewValue;
-            Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
-
-            var tempImage = grayImage.PyrDown();
-            var destImage = tempImage.PyrUp();
-
-
-            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-            if (treshhold == false)
-            {
-                imageBox2.Image = cannyEdges.Resize(640, 480, Inter.Linear);
-            }
-            else
-            {
-                var cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
-                var resultImage = sourceImage.Sub(cannyEdgesBgr); // попиксельное вычитание
-
-                //обход по каналам
-                for (int channel = 0; channel < resultImage.NumberOfChannels; channel++)
-                    for (int x = 0; x < resultImage.Width; x++)
-                        for (int y = 0; y < resultImage.Height; y++) // обход по пискелям
-                        {
-                            // получение цвета пикселя
-                            byte color = resultImage.Data[y, x, channel];
-                            if (color <= 50)
-                                color = 0;
-                            else if (color <= 100)
-                                color = 25;
-                            else if (color <= 150)
-                                color = 180;
-                            else if (color <= 200)
-                                color = 210;
-                            else
-                                color = 255;
-                            resultImage.Data[y, x, channel] = color; // изменение цвета пикселя
-                        }
-
-                imageBox2.Image = resultImage.Resize(640, 480, Inter.Linear);
-            }
         }
 
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             cannyThresholdLinking += e.OldValue - e.NewValue;
-            Image<Gray, byte> grayImage = sourceImage.Convert<Gray, byte>();
-
-            var tempImage = grayImage.PyrDown();
-            var destImage = tempImage.PyrUp();
-
-
-            Image<Gray, byte> cannyEdges = destImage.Canny(cannyThreshold, cannyThresholdLinking);
-            if (treshhold == false)
-            {
-
-                imageBox2.Image = cannyEdges.Resize(640, 480, Inter.Linear);
-            }
-            else
-            {
-                var cannyEdgesBgr = cannyEdges.Convert<Bgr, byte>();
-                var resultImage = sourceImage.Sub(cannyEdgesBgr); // попиксельное вычитание
-
-                //обход по каналам
-                for (int channel = 0; channel < resultImage.NumberOfChannels; channel++)
-                    for (int x = 0; x < resultImage.Width; x++)
-                        for (int y = 0; y < resultImage.Height; y++) // обход по пискелям
-                        {
-                            // получение цвета пикселя
-                            byte color = resultImage.Data[y, x, channel];
-                            if (color <= 50)
-                                color = 0;
-                            else if (color <= 100)
-                                color = 25;
-                            else if (color <= 150)
-                                color = 180;
-                            else if (color <= 200)
-                                color = 210;
-                            else
-                                color = 255;
-                            resultImage.Data[y, x, channel] = color; // изменение цвета пикселя
-                        }
-
-                imageBox2.Image = resultImage.Resize(640, 480, Inter.Linear);
-            }
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -245,11 +110,25 @@ namespace _1Laba
             imageBox2.Image = null;
             imageBox2.ClearOperation();
             imageBox1.ClearOperation();
+            timer1.Enabled = false;
+            timer2.Enabled = false;
+            choice = 0;
 
         }
 
         private void imageBox2_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (choice == 0)
+                imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear);
+            if (choice == 1)
+                imageBox2.Image = newImage.filterCanny(sourceImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
+            if(choice == 2)
+                imageBox2.Image = newImage.thresholdFilter(sourceImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
 
         }
     }

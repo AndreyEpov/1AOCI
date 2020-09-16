@@ -39,6 +39,7 @@
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.button5 = new System.Windows.Forms.Button();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             this.SuspendLayout();
@@ -53,11 +54,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(658, 12);
+            this.button1.Location = new System.Drawing.Point(658, 14);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(43, 67);
+            this.button1.Size = new System.Drawing.Size(50, 37);
             this.button1.TabIndex = 3;
-            this.button1.Text = "Load_Pic";
+            this.button1.Text = "LoadPic";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -72,19 +73,19 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(658, 114);
+            this.button2.Location = new System.Drawing.Point(658, 57);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(43, 67);
+            this.button2.Size = new System.Drawing.Size(50, 36);
             this.button2.TabIndex = 5;
-            this.button2.Text = "Edit";
+            this.button2.Text = "Canny";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(658, 353);
+            this.button3.Location = new System.Drawing.Point(658, 147);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(43, 78);
+            this.button3.Size = new System.Drawing.Size(50, 43);
             this.button3.TabIndex = 6;
             this.button3.Text = "Video";
             this.button3.UseVisualStyleBackColor = true;
@@ -97,11 +98,11 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(659, 213);
+            this.button4.Location = new System.Drawing.Point(658, 99);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(42, 83);
+            this.button4.Size = new System.Drawing.Size(50, 42);
             this.button4.TabIndex = 7;
-            this.button4.Text = "Filter Kanny";
+            this.button4.Text = "CellShading";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -125,13 +126,17 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(658, 437);
+            this.button5.Location = new System.Drawing.Point(658, 196);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(42, 44);
+            this.button5.Size = new System.Drawing.Size(50, 44);
             this.button5.TabIndex = 10;
-            this.button5.Text = "clear";
+            this.button5.Text = "Clear";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Form1
             // 
@@ -167,6 +172,7 @@
         private System.Windows.Forms.HScrollBar hScrollBar1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 
