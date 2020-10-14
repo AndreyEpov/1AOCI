@@ -45,7 +45,6 @@
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar4 = new System.Windows.Forms.TrackBar();
             this.RGBList = new System.Windows.Forms.CheckedListBox();
-            this.Accept_but = new System.Windows.Forms.Button();
             this.Make_Gray = new System.Windows.Forms.Button();
             this.Sepia = new System.Windows.Forms.Button();
             this.Brightness = new System.Windows.Forms.Button();
@@ -72,6 +71,8 @@
             this.trackBar12 = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.LR_1 = new System.Windows.Forms.ListBox();
+            this.LR_2 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -237,16 +238,6 @@
             this.RGBList.Name = "RGBList";
             this.RGBList.Size = new System.Drawing.Size(52, 49);
             this.RGBList.TabIndex = 15;
-            // 
-            // Accept_but
-            // 
-            this.Accept_but.Location = new System.Drawing.Point(656, 301);
-            this.Accept_but.Name = "Accept_but";
-            this.Accept_but.Size = new System.Drawing.Size(52, 25);
-            this.Accept_but.TabIndex = 16;
-            this.Accept_but.Text = "Accept";
-            this.Accept_but.UseVisualStyleBackColor = true;
-            this.Accept_but.Click += new System.EventHandler(this.Accept_but_Click);
             // 
             // Make_Gray
             // 
@@ -503,11 +494,50 @@
             this.label3.TabIndex = 42;
             this.label3.Text = "Cartoon";
             // 
+            // LR_1
+            // 
+            this.LR_1.FormattingEnabled = true;
+            this.LR_1.Items.AddRange(new object[] {
+            "Canny",
+            "Cell_Shading",
+            "Video"});
+            this.LR_1.Location = new System.Drawing.Point(12, 643);
+            this.LR_1.Name = "LR_1";
+            this.LR_1.Size = new System.Drawing.Size(120, 43);
+            this.LR_1.TabIndex = 43;
+            this.LR_1.SelectedIndexChanged += new System.EventHandler(this.LR_1_SelectedIndexChanged);
+            // 
+            // LR_2
+            // 
+            this.LR_2.FormattingEnabled = true;
+            this.LR_2.Items.AddRange(new object[] {
+            "RGB",
+            "Make_Gray",
+            "Sepia",
+            "Brightness||Contrast",
+            "Logical_Addition",
+            "Logical_Expect",
+            "Logical_Intersect",
+            "HSV",
+            "Median_Blur",
+            "Matrix_Sharp",
+            "Matrix_Embos",
+            "Matrix_Edges",
+            "Water_Filter",
+            "Cartoon_Filter"});
+            this.LR_2.Location = new System.Drawing.Point(405, 500);
+            this.LR_2.Name = "LR_2";
+            this.LR_2.Size = new System.Drawing.Size(120, 186);
+            this.LR_2.TabIndex = 44;
+            this.LR_2.SelectedIndexChanged += new System.EventHandler(this.LR_2_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.LR_2);
+            this.Controls.Add(this.LR_1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.trackBar12);
@@ -534,7 +564,6 @@
             this.Controls.Add(this.Brightness);
             this.Controls.Add(this.Sepia);
             this.Controls.Add(this.Make_Gray);
-            this.Controls.Add(this.Accept_but);
             this.Controls.Add(this.RGBList);
             this.Controls.Add(this.trackBar4);
             this.Controls.Add(this.trackBar3);
@@ -588,7 +617,6 @@
         private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.TrackBar trackBar4;
         private System.Windows.Forms.CheckedListBox RGBList;
-        private System.Windows.Forms.Button Accept_but;
         private System.Windows.Forms.Button Make_Gray;
         private System.Windows.Forms.Button Sepia;
         private System.Windows.Forms.Button Brightness;
@@ -615,6 +643,8 @@
         private System.Windows.Forms.TrackBar trackBar12;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox LR_1;
+        private System.Windows.Forms.ListBox LR_2;
     }
 }
 

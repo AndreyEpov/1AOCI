@@ -245,6 +245,116 @@ namespace _1Laba
             choice = 18;
         }
 
+        private void LR_1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+                vScrollBar1.Visible = true;
+                hScrollBar1.Visible = true;
+
+            trackBar1.Visible = true;
+            trackBar2.Visible = true;
+            trackBar3.Visible = true;
+            trackBar4.Visible = true;
+
+            trackBar5.Visible = false;
+            trackBar6.Visible = false;
+            trackBar7.Visible = false;
+            trackBar8.Visible = false;
+            trackBar9.Visible = false;
+            trackBar10.Visible = false;
+            trackBar11.Visible = false;
+            trackBar12.Visible = false;
+            RGBList.Visible = false;
+        }
+
+        private void LR_2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RGBList.Visible = false;
+            vScrollBar1.Visible = false;
+            hScrollBar1.Visible = false;
+    
+            trackBar1.Visible = false;
+            trackBar2.Visible = false;
+            trackBar3.Visible = false;
+            trackBar4.Visible = false;          
+            trackBar5.Visible = false;
+            trackBar6.Visible = false;
+            trackBar7.Visible = false;
+            trackBar8.Visible = false;
+            trackBar9.Visible = false;
+            trackBar10.Visible = false;
+            trackBar11.Visible = false;
+            trackBar12.Visible = false;
+
+            if (LR_2.SelectedIndex == 0)
+            {
+                RGBList.Visible = true;
+                choice = 4;
+            }
+            if (LR_2.SelectedIndex == 1)
+                choice = 5;
+            if (LR_2.SelectedIndex == 2)
+            {
+                choice = 6;
+            }
+            if (LR_2.SelectedIndex == 3)
+            {
+                choice = 7;
+                trackBar5.Visible = true;
+                trackBar6.Visible = true;
+            }
+            if (LR_2.SelectedIndex == 4)
+            {
+                choice = 8;
+                trackBar7.Visible = true;
+                trackBar8.Visible = true;
+            }
+            if (LR_2.SelectedIndex == 5)
+            {
+                choice = 9;
+                trackBar7.Visible = true;
+                trackBar8.Visible = true;
+            }
+            if (LR_2.SelectedIndex == 6)
+            {
+                choice = 10;
+                trackBar7.Visible = true;
+                trackBar8.Visible = true;
+            }
+            if (LR_2.SelectedIndex == 7)
+            {
+                choice = 18;
+                trackBar11.Visible = true;
+                trackBar12.Visible = true;
+            }
+            if (LR_2.SelectedIndex == 8)
+                choice = 11;
+
+            if (LR_2.SelectedIndex == 9)
+                choice = 12;
+
+            if (LR_2.SelectedIndex == 10)
+                choice = 13;
+
+            if (LR_2.SelectedIndex == 11)
+                choice = 14;
+            if (LR_2.SelectedIndex == 12)
+            {
+                choice = 18;
+                trackBar5.Visible = true;
+                trackBar6.Visible = true;
+                trackBar7.Visible = true;
+                trackBar8.Visible = true;
+            }
+            if (LR_2.SelectedIndex == 13)
+            {
+                choice = 18;
+                trackBar7.Visible = true;
+                trackBar8.Visible = true;
+                trackBar9.Visible = true;
+                trackBar10.Visible = true;
+            }
+        }
+
         private void trackBar11_Scroll(object sender, EventArgs e)
         {
             tb11 = trackBar11.Value;
@@ -289,11 +399,19 @@ namespace _1Laba
         {
             if (choice == 0)
                 imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear);
-            if (choice == 1)
+            if (LR_1.SelectedIndex == 0)
+            {
+                if(vScrollBar1.Visible != true && hScrollBar1.Visible != true)
+                {
+
+                  
+                }
                 imageBox2.Image = newImage.filterCanny(sourceImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
-            if(choice == 2)
+
+            }
+            if (LR_1.SelectedIndex == 1)
                 imageBox2.Image = newImage.thresholdFilter(sourceImage, cannyThreshold, cannyThresholdLinking, tb1,tb2,tb3,tb4).Resize(640, 480, Inter.Linear);
-            if (choice == 4)
+            if (choice == 4 && RGBList.SelectedItem != null)
                 imageBox2.Image = newImage.editColourChanel(sourceImage.Resize(640, 480, Inter.Linear), RGBList);
             if (choice == 5)
                 imageBox2.Image = newImage.grayAlgoritm(sourceImage.Resize(640, 480, Inter.Linear));
