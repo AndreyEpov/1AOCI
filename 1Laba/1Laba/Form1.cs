@@ -23,8 +23,8 @@ namespace _1Laba
         double cannyThresholdLinking;
         int choice = 0;
         editImage newImage = new editImage();
-        private int tb1, tb2, tb3, tb4;
-        private double tb5 = 10, tb6 = 0, tb7 = 5, tb8 = 5, tb9 = 126, tb10 = 100;
+        private int tb1, tb2, tb3, tb4,tb11 = 0;
+        private double tb5 = 10, tb6 = 0, tb7 = 5, tb8 = 5, tb9 = 126, tb10 = 100, tb12 = 0;
         private int[,] mass = new int[3, 3]
             {
                 {-1,-1,-1},
@@ -240,6 +240,21 @@ namespace _1Laba
             choice = 17;
         }
 
+        private void button16_Click(object sender, EventArgs e)
+        {
+            choice = 18;
+        }
+
+        private void trackBar11_Scroll(object sender, EventArgs e)
+        {
+            tb11 = trackBar11.Value;
+        }
+
+        private void trackBar12_Scroll(object sender, EventArgs e)
+        {
+            tb12 = trackBar12.Value;
+        }
+
         private void trackBar9_Scroll(object sender, EventArgs e)
         {
             tb9 = trackBar9.Value;
@@ -333,6 +348,11 @@ namespace _1Laba
             {
                 sourceImage = sourceImage.Resize(640, 480, Inter.Linear);
                 imageBox2.Image = newImage.intersectionImage(sourceImage, newImage.editEdge(newImage.editBlurGray(sourceImage),tb9,tb10) , 1, tb7, tb8);
+            }
+            if (choice == 18)
+            {
+                sourceImage = sourceImage.Resize(640, 480, Inter.Linear);
+                imageBox2.Image = newImage.editHSV(sourceImage,tb12,tb11);
             }
         }
 

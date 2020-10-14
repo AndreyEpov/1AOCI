@@ -371,6 +371,18 @@ namespace _1Laba
             }
             return destImage;
         }
+        public Image<Hsv, byte> editHSV(Image<Bgr, byte> sourceImage, double value, int value1)
+        {
+            Image<Hsv, byte> imageHsv = sourceImage.Convert<Hsv, byte>();
+            for (int y = 0; y < imageHsv.Size.Height; y++)
+            {
+                for (int x = 0; x < imageHsv.Size.Width; x++)
+                {
+                    imageHsv.Data[y, x, value1] = (byte)value;
 
+                }
+            }
+            return imageHsv;
+        }
     }
 }

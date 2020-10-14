@@ -67,6 +67,9 @@
             this.button15 = new System.Windows.Forms.Button();
             this.trackBar9 = new System.Windows.Forms.TrackBar();
             this.trackBar10 = new System.Windows.Forms.TrackBar();
+            this.button16 = new System.Windows.Forms.Button();
+            this.trackBar11 = new System.Windows.Forms.TrackBar();
+            this.trackBar12 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -79,6 +82,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar12)).BeginInit();
             this.SuspendLayout();
             // 
             // imageBox1
@@ -447,11 +452,45 @@
             this.trackBar10.Value = 100;
             this.trackBar10.Scroll += new System.EventHandler(this.trackBar10_Scroll);
             // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(577, 560);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(52, 39);
+            this.button16.TabIndex = 38;
+            this.button16.Text = "HSV";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // trackBar11
+            // 
+            this.trackBar11.LargeChange = 1;
+            this.trackBar11.Location = new System.Drawing.Point(707, 581);
+            this.trackBar11.Maximum = 2;
+            this.trackBar11.Name = "trackBar11";
+            this.trackBar11.Size = new System.Drawing.Size(143, 45);
+            this.trackBar11.TabIndex = 39;
+            this.trackBar11.Scroll += new System.EventHandler(this.trackBar11_Scroll);
+            // 
+            // trackBar12
+            // 
+            this.trackBar12.Location = new System.Drawing.Point(707, 632);
+            this.trackBar12.Maximum = 255;
+            this.trackBar12.Name = "trackBar12";
+            this.trackBar12.Size = new System.Drawing.Size(640, 45);
+            this.trackBar12.SmallChange = 5;
+            this.trackBar12.TabIndex = 40;
+            this.trackBar12.TickFrequency = 10;
+            this.trackBar12.Scroll += new System.EventHandler(this.trackBar12_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 682);
+            this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.trackBar12);
+            this.Controls.Add(this.trackBar11);
+            this.Controls.Add(this.button16);
             this.Controls.Add(this.trackBar10);
             this.Controls.Add(this.trackBar9);
             this.Controls.Add(this.button15);
@@ -502,6 +541,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar12)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -547,6 +588,9 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.TrackBar trackBar9;
         private System.Windows.Forms.TrackBar trackBar10;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.TrackBar trackBar11;
+        private System.Windows.Forms.TrackBar trackBar12;
     }
 }
 
