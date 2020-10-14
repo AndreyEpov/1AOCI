@@ -285,10 +285,9 @@ namespace _1Laba
             }
             return destImage;
         }
-        public Image<Bgr, byte> editBlur(Image<Bgr, byte> image)
+        public Image<Bgr, byte> editBlur(Image<Bgr, byte> sourceImage)
         {
-            var blurimg = image;
-            var destImage = blurimg.CopyBlank();
+            var destImage = sourceImage.CopyBlank();
             int sh = 1;
             for (int channel = 0; channel < destImage.NumberOfChannels; channel++)
             {
@@ -301,7 +300,7 @@ namespace _1Laba
                         {
                             for (int j = -1; j < 2; j++)
                             {
-                                blurl.Add(blurimg.Data[ y + j, x + i, channel]);
+                                blurl.Add(sourceImage.Data[ y + j, x + i, channel]);
                             }
                         }
                         blurl.Sort();
@@ -311,10 +310,10 @@ namespace _1Laba
             }
             return destImage;
         }
-        public Image<Bgr, byte> editMass(Image<Bgr, byte> image, int[,] mat)
+        public Image<Bgr, byte> editMass(Image<Bgr, byte> sourceImage, int[,] mat)
         {
-            var blurimg = image;
-            var destImage = blurimg.CopyBlank();
+            
+            var destImage = sourceImage.CopyBlank();
             int sh = 1;
             for (int channel = 0; channel < destImage.NumberOfChannels; channel++)
             {
@@ -327,7 +326,7 @@ namespace _1Laba
                         {
                             for (int j = -1; j < 2; j++)
                             {
-                                result += blurimg.Data[j + y, i + x, channel] * mat[i + 1, j + 1];
+                                result += sourceImage.Data[j + y, i + x, channel] * mat[i + 1, j + 1];
                             }
                         }
                        
@@ -345,9 +344,9 @@ namespace _1Laba
             Image<Bgr, byte> edgesBgr = edges.Convert<Bgr, byte>();
             return edgesBgr;
         }
-        public Image<Gray, byte> editBlurGray(Image<Bgr, byte> image)
+        public Image<Gray, byte> editBlurGray(Image<Bgr, byte> sourceImage)
         {
-            var blurimg = editGray(image);
+            var blurimg = editGray(sourceImage);
             var destImage = blurimg.CopyBlank();
             int sh = 1;
             for (int channel = 0; channel < destImage.NumberOfChannels; channel++)
