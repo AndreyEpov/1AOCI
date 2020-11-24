@@ -32,10 +32,8 @@
             this.imageBox1 = new Emgu.CV.UI.ImageBox();
             this.button1 = new System.Windows.Forms.Button();
             this.imageBox2 = new Emgu.CV.UI.ImageBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button4 = new System.Windows.Forms.Button();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.button5 = new System.Windows.Forms.Button();
@@ -45,34 +43,42 @@
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar4 = new System.Windows.Forms.TrackBar();
             this.RGBList = new System.Windows.Forms.CheckedListBox();
-            this.Make_Gray = new System.Windows.Forms.Button();
-            this.Sepia = new System.Windows.Forms.Button();
-            this.Brightness = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.trackBar6 = new System.Windows.Forms.TrackBar();
             this.trackBar7 = new System.Windows.Forms.TrackBar();
             this.trackBar8 = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button13 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
             this.trackBar9 = new System.Windows.Forms.TrackBar();
             this.trackBar10 = new System.Windows.Forms.TrackBar();
-            this.button16 = new System.Windows.Forms.Button();
             this.trackBar11 = new System.Windows.Forms.TrackBar();
             this.trackBar12 = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.LR_1 = new System.Windows.Forms.ListBox();
             this.LR_2 = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbForScale = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.LR_3 = new System.Windows.Forms.ListBox();
+            this.Accept_but = new System.Windows.Forms.Button();
+            this.tbY = new System.Windows.Forms.TextBox();
+            this.tbForComma = new System.Windows.Forms.TextBox();
+            this.labelComma = new System.Windows.Forms.Label();
+            this.labelComma1 = new System.Windows.Forms.Label();
+            this.tbYcomma = new System.Windows.Forms.TextBox();
+            this.but_quarter1 = new System.Windows.Forms.Button();
+            this.but_quarter2 = new System.Windows.Forms.Button();
+            this.but_quarter3 = new System.Windows.Forms.Button();
+            this.but_quarter4 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label6 = new System.Windows.Forms.Label();
+            this.LR_4 = new System.Windows.Forms.ListBox();
+            this.LR_5 = new System.Windows.Forms.ListBox();
+            this.LR_6 = new System.Windows.Forms.ListBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.LR_7 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -96,6 +102,7 @@
             this.imageBox1.Size = new System.Drawing.Size(640, 480);
             this.imageBox1.TabIndex = 2;
             this.imageBox1.TabStop = false;
+            this.imageBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.imageBox1_MouseClick);
             // 
             // button1
             // 
@@ -116,19 +123,9 @@
             this.imageBox2.TabStop = false;
             this.imageBox2.Click += new System.EventHandler(this.imageBox2_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(658, 57);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(50, 36);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Canny";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(658, 147);
+            this.button3.Location = new System.Drawing.Point(658, 57);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(50, 43);
             this.button3.TabIndex = 6;
@@ -140,16 +137,6 @@
             // 
             this.timer1.Interval = 33;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(658, 99);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(50, 42);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "CellShading";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // hScrollBar1
             // 
@@ -173,7 +160,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(658, 196);
+            this.button5.Location = new System.Drawing.Point(658, 106);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(50, 44);
             this.button5.TabIndex = 10;
@@ -234,54 +221,14 @@
             "Blue",
             "Green",
             "Red"});
-            this.RGBList.Location = new System.Drawing.Point(656, 246);
+            this.RGBList.Location = new System.Drawing.Point(656, 156);
             this.RGBList.Name = "RGBList";
             this.RGBList.Size = new System.Drawing.Size(52, 49);
             this.RGBList.TabIndex = 15;
             // 
-            // Make_Gray
-            // 
-            this.Make_Gray.Location = new System.Drawing.Point(656, 332);
-            this.Make_Gray.Name = "Make_Gray";
-            this.Make_Gray.Size = new System.Drawing.Size(52, 35);
-            this.Make_Gray.TabIndex = 17;
-            this.Make_Gray.Text = "Make_Gray";
-            this.Make_Gray.UseVisualStyleBackColor = true;
-            this.Make_Gray.Click += new System.EventHandler(this.Make_Gray_Click);
-            // 
-            // Sepia
-            // 
-            this.Sepia.Location = new System.Drawing.Point(656, 373);
-            this.Sepia.Name = "Sepia";
-            this.Sepia.Size = new System.Drawing.Size(52, 20);
-            this.Sepia.TabIndex = 18;
-            this.Sepia.Text = "Sepia";
-            this.Sepia.UseVisualStyleBackColor = true;
-            this.Sepia.Click += new System.EventHandler(this.Sepia_Click);
-            // 
-            // Brightness
-            // 
-            this.Brightness.Location = new System.Drawing.Point(656, 399);
-            this.Brightness.Name = "Brightness";
-            this.Brightness.Size = new System.Drawing.Size(52, 39);
-            this.Brightness.TabIndex = 19;
-            this.Brightness.Text = "Brightness";
-            this.Brightness.UseVisualStyleBackColor = true;
-            this.Brightness.Click += new System.EventHandler(this.Brightness_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(656, 453);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(45, 39);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "Add";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // trackBar5
             // 
-            this.trackBar5.Location = new System.Drawing.Point(548, 521);
+            this.trackBar5.Location = new System.Drawing.Point(597, 515);
             this.trackBar5.Maximum = 20;
             this.trackBar5.Name = "trackBar5";
             this.trackBar5.Size = new System.Drawing.Size(104, 45);
@@ -303,7 +250,7 @@
             // 
             // trackBar7
             // 
-            this.trackBar7.Location = new System.Drawing.Point(12, 515);
+            this.trackBar7.Location = new System.Drawing.Point(487, 511);
             this.trackBar7.Name = "trackBar7";
             this.trackBar7.Size = new System.Drawing.Size(104, 45);
             this.trackBar7.TabIndex = 23;
@@ -312,122 +259,16 @@
             // 
             // trackBar8
             // 
-            this.trackBar8.Location = new System.Drawing.Point(122, 515);
+            this.trackBar8.Location = new System.Drawing.Point(416, 511);
             this.trackBar8.Name = "trackBar8";
             this.trackBar8.Size = new System.Drawing.Size(104, 45);
             this.trackBar8.TabIndex = 24;
             this.trackBar8.Value = 5;
             this.trackBar8.Scroll += new System.EventHandler(this.trackBar8_Scroll);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(72, 558);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "addition";
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(656, 495);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(45, 39);
-            this.button7.TabIndex = 26;
-            this.button7.Text = "Expect";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(656, 540);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(45, 39);
-            this.button8.TabIndex = 27;
-            this.button8.Text = "Intersect";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(252, 515);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(45, 39);
-            this.button9.TabIndex = 28;
-            this.button9.Text = "Blur";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(303, 515);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(45, 39);
-            this.button10.TabIndex = 29;
-            this.button10.Text = "Sharp";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(354, 515);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(45, 39);
-            this.button11.TabIndex = 30;
-            this.button11.Text = "Embos";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(405, 515);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(45, 39);
-            this.button12.TabIndex = 31;
-            this.button12.Text = "Edges";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(252, 560);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 32;
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(354, 558);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(45, 39);
-            this.button13.TabIndex = 33;
-            this.button13.Text = "Massive";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
-            // 
-            // button14
-            // 
-            this.button14.Location = new System.Drawing.Point(507, 515);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(45, 39);
-            this.button14.TabIndex = 34;
-            this.button14.Text = "Water";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // button15
-            // 
-            this.button15.Location = new System.Drawing.Point(507, 558);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(45, 39);
-            this.button15.TabIndex = 35;
-            this.button15.Text = "Cartoon";
-            this.button15.UseVisualStyleBackColor = true;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
-            // 
             // trackBar9
             // 
-            this.trackBar9.Location = new System.Drawing.Point(12, 611);
+            this.trackBar9.Location = new System.Drawing.Point(372, 669);
             this.trackBar9.Maximum = 255;
             this.trackBar9.Name = "trackBar9";
             this.trackBar9.Size = new System.Drawing.Size(336, 45);
@@ -445,20 +286,10 @@
             this.trackBar10.Value = 100;
             this.trackBar10.Scroll += new System.EventHandler(this.trackBar10_Scroll);
             // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(577, 560);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(52, 39);
-            this.button16.TabIndex = 38;
-            this.button16.Text = "HSV";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
             // trackBar11
             // 
             this.trackBar11.LargeChange = 1;
-            this.trackBar11.Location = new System.Drawing.Point(707, 581);
+            this.trackBar11.Location = new System.Drawing.Point(448, 543);
             this.trackBar11.Maximum = 2;
             this.trackBar11.Name = "trackBar11";
             this.trackBar11.Size = new System.Drawing.Size(143, 45);
@@ -476,24 +307,6 @@
             this.trackBar12.TickFrequency = 10;
             this.trackBar12.Scroll += new System.EventHandler(this.trackBar12_Scroll);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(821, 616);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
-            this.label2.TabIndex = 41;
-            this.label2.Text = "HSV";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(330, 643);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 42;
-            this.label3.Text = "Cartoon";
-            // 
             // LR_1
             // 
             this.LR_1.FormattingEnabled = true;
@@ -501,14 +314,15 @@
             "Canny",
             "Cell_Shading",
             "Video"});
-            this.LR_1.Location = new System.Drawing.Point(12, 643);
+            this.LR_1.Location = new System.Drawing.Point(15, 511);
             this.LR_1.Name = "LR_1";
-            this.LR_1.Size = new System.Drawing.Size(120, 43);
+            this.LR_1.Size = new System.Drawing.Size(86, 186);
             this.LR_1.TabIndex = 43;
             this.LR_1.SelectedIndexChanged += new System.EventHandler(this.LR_1_SelectedIndexChanged);
             // 
             // LR_2
             // 
+            this.LR_2.DisplayMember = "1";
             this.LR_2.FormattingEnabled = true;
             this.LR_2.Items.AddRange(new object[] {
             "RGB",
@@ -525,45 +339,321 @@
             "Matrix_Edges",
             "Water_Filter",
             "Cartoon_Filter"});
-            this.LR_2.Location = new System.Drawing.Point(405, 500);
+            this.LR_2.Location = new System.Drawing.Point(116, 511);
             this.LR_2.Name = "LR_2";
             this.LR_2.Size = new System.Drawing.Size(120, 186);
             this.LR_2.TabIndex = 44;
+            this.LR_2.ValueMember = "1";
             this.LR_2.SelectedIndexChanged += new System.EventHandler(this.LR_2_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 495);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(89, 13);
+            this.label1.TabIndex = 45;
+            this.label1.Text = "Лабораторная 1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(134, 495);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(89, 13);
+            this.label2.TabIndex = 46;
+            this.label2.Text = "Лабораторная 2";
+            // 
+            // tbForScale
+            // 
+            this.tbForScale.Location = new System.Drawing.Point(637, 645);
+            this.tbForScale.Name = "tbForScale";
+            this.tbForScale.Size = new System.Drawing.Size(36, 20);
+            this.tbForScale.TabIndex = 47;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(253, 495);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(89, 13);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Лабораторная 3";
+            this.label3.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // LR_3
+            // 
+            this.LR_3.FormattingEnabled = true;
+            this.LR_3.Items.AddRange(new object[] {
+            "Scale",
+            "BiScale",
+            "Shift",
+            "Rotate",
+            "Homography",
+            "Flip"});
+            this.LR_3.Location = new System.Drawing.Point(256, 511);
+            this.LR_3.Name = "LR_3";
+            this.LR_3.Size = new System.Drawing.Size(86, 186);
+            this.LR_3.TabIndex = 49;
+            this.LR_3.SelectedIndexChanged += new System.EventHandler(this.LR_3_SelectedIndexChanged);
+            // 
+            // Accept_but
+            // 
+            this.Accept_but.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold);
+            this.Accept_but.Location = new System.Drawing.Point(570, 495);
+            this.Accept_but.Name = "Accept_but";
+            this.Accept_but.Size = new System.Drawing.Size(200, 150);
+            this.Accept_but.TabIndex = 50;
+            this.Accept_but.Text = "Accept";
+            this.Accept_but.UseVisualStyleBackColor = true;
+            this.Accept_but.Visible = false;
+            this.Accept_but.Click += new System.EventHandler(this.Accept_but_Click);
+            // 
+            // tbY
+            // 
+            this.tbY.Location = new System.Drawing.Point(637, 677);
+            this.tbY.Name = "tbY";
+            this.tbY.Size = new System.Drawing.Size(36, 20);
+            this.tbY.TabIndex = 51;
+            // 
+            // tbForComma
+            // 
+            this.tbForComma.Location = new System.Drawing.Point(694, 643);
+            this.tbForComma.Name = "tbForComma";
+            this.tbForComma.Size = new System.Drawing.Size(36, 20);
+            this.tbForComma.TabIndex = 52;
+            this.tbForComma.Text = "0";
+            // 
+            // labelComma
+            // 
+            this.labelComma.AutoSize = true;
+            this.labelComma.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelComma.Location = new System.Drawing.Point(679, 643);
+            this.labelComma.Name = "labelComma";
+            this.labelComma.Size = new System.Drawing.Size(13, 20);
+            this.labelComma.TabIndex = 53;
+            this.labelComma.Text = ",";
+            // 
+            // labelComma1
+            // 
+            this.labelComma1.AutoSize = true;
+            this.labelComma1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelComma1.Location = new System.Drawing.Point(679, 677);
+            this.labelComma1.Name = "labelComma1";
+            this.labelComma1.Size = new System.Drawing.Size(13, 20);
+            this.labelComma1.TabIndex = 54;
+            this.labelComma1.Text = ",";
+            // 
+            // tbYcomma
+            // 
+            this.tbYcomma.Location = new System.Drawing.Point(694, 677);
+            this.tbYcomma.Name = "tbYcomma";
+            this.tbYcomma.Size = new System.Drawing.Size(36, 20);
+            this.tbYcomma.TabIndex = 55;
+            this.tbYcomma.Text = "0";
+            // 
+            // but_quarter1
+            // 
+            this.but_quarter1.Location = new System.Drawing.Point(811, 595);
+            this.but_quarter1.Name = "but_quarter1";
+            this.but_quarter1.Size = new System.Drawing.Size(34, 31);
+            this.but_quarter1.TabIndex = 56;
+            this.but_quarter1.Text = "1";
+            this.but_quarter1.UseVisualStyleBackColor = true;
+            this.but_quarter1.Click += new System.EventHandler(this.but_quarter1_Click);
+            // 
+            // but_quarter2
+            // 
+            this.but_quarter2.Location = new System.Drawing.Point(851, 594);
+            this.but_quarter2.Name = "but_quarter2";
+            this.but_quarter2.Size = new System.Drawing.Size(34, 31);
+            this.but_quarter2.TabIndex = 57;
+            this.but_quarter2.Text = "2";
+            this.but_quarter2.UseVisualStyleBackColor = true;
+            this.but_quarter2.Click += new System.EventHandler(this.but_quarter2_Click);
+            // 
+            // but_quarter3
+            // 
+            this.but_quarter3.Location = new System.Drawing.Point(891, 594);
+            this.but_quarter3.Name = "but_quarter3";
+            this.but_quarter3.Size = new System.Drawing.Size(34, 31);
+            this.but_quarter3.TabIndex = 58;
+            this.but_quarter3.Text = "3";
+            this.but_quarter3.UseVisualStyleBackColor = true;
+            this.but_quarter3.Click += new System.EventHandler(this.but_quarter3_Click);
+            // 
+            // but_quarter4
+            // 
+            this.but_quarter4.Location = new System.Drawing.Point(931, 594);
+            this.but_quarter4.Name = "but_quarter4";
+            this.but_quarter4.Size = new System.Drawing.Size(34, 31);
+            this.but_quarter4.TabIndex = 59;
+            this.but_quarter4.Text = "4";
+            this.but_quarter4.UseVisualStyleBackColor = true;
+            this.but_quarter4.Click += new System.EventHandler(this.but_quarter4_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(280, 594);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.TabIndex = 60;
+            this.label4.Text = "Лабораторная 4";
+            this.label4.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(280, 607);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 13);
+            this.label5.TabIndex = 61;
+            this.label5.Text = "Лабораторная 5";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(348, 515);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(58, 17);
+            this.radioButton1.TabIndex = 62;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "1-3 ЛР";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(348, 538);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(58, 17);
+            this.radioButton2.TabIndex = 63;
+            this.radioButton2.Text = "4-6 ЛР";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(280, 620);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(89, 13);
+            this.label6.TabIndex = 64;
+            this.label6.Text = "Лабораторная 6";
+            // 
+            // LR_4
+            // 
+            this.LR_4.FormattingEnabled = true;
+            this.LR_4.Items.AddRange(new object[] {
+            "Canny",
+            "Cell_Shading",
+            "Video"});
+            this.LR_4.Location = new System.Drawing.Point(15, 528);
+            this.LR_4.Name = "LR_4";
+            this.LR_4.Size = new System.Drawing.Size(86, 186);
+            this.LR_4.TabIndex = 65;
+            // 
+            // LR_5
+            // 
+            this.LR_5.FormattingEnabled = true;
+            this.LR_5.Items.AddRange(new object[] {
+            "Canny",
+            "Cell_Shading",
+            "Video"});
+            this.LR_5.Location = new System.Drawing.Point(116, 528);
+            this.LR_5.Name = "LR_5";
+            this.LR_5.Size = new System.Drawing.Size(120, 186);
+            this.LR_5.TabIndex = 66;
+            // 
+            // LR_6
+            // 
+            this.LR_6.FormattingEnabled = true;
+            this.LR_6.Items.AddRange(new object[] {
+            "Canny",
+            "Cell_Shading",
+            "Video"});
+            this.LR_6.Location = new System.Drawing.Point(256, 528);
+            this.LR_6.Name = "LR_6";
+            this.LR_6.Size = new System.Drawing.Size(86, 186);
+            this.LR_6.TabIndex = 67;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(280, 632);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(89, 13);
+            this.label7.TabIndex = 68;
+            this.label7.Text = "Лабораторная 7";
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(348, 562);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(49, 17);
+            this.radioButton3.TabIndex = 69;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "7 ЛР";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
+            // 
+            // LR_7
+            // 
+            this.LR_7.FormattingEnabled = true;
+            this.LR_7.Items.AddRange(new object[] {
+            "Canny",
+            "Cell_Shading",
+            "Video"});
+            this.LR_7.Location = new System.Drawing.Point(15, 543);
+            this.LR_7.Name = "LR_7";
+            this.LR_7.Size = new System.Drawing.Size(327, 186);
+            this.LR_7.TabIndex = 70;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.LR_7);
+            this.Controls.Add(this.radioButton3);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.LR_6);
+            this.Controls.Add(this.LR_5);
+            this.Controls.Add(this.LR_4);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.radioButton2);
+            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.but_quarter4);
+            this.Controls.Add(this.but_quarter3);
+            this.Controls.Add(this.but_quarter2);
+            this.Controls.Add(this.but_quarter1);
+            this.Controls.Add(this.tbYcomma);
+            this.Controls.Add(this.labelComma1);
+            this.Controls.Add(this.labelComma);
+            this.Controls.Add(this.tbForComma);
+            this.Controls.Add(this.tbY);
+            this.Controls.Add(this.Accept_but);
+            this.Controls.Add(this.LR_3);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.tbForScale);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.LR_2);
             this.Controls.Add(this.LR_1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.trackBar12);
             this.Controls.Add(this.trackBar11);
-            this.Controls.Add(this.button16);
             this.Controls.Add(this.trackBar10);
             this.Controls.Add(this.trackBar9);
-            this.Controls.Add(this.button15);
-            this.Controls.Add(this.button14);
-            this.Controls.Add(this.button13);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button12);
-            this.Controls.Add(this.button11);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar8);
             this.Controls.Add(this.trackBar7);
             this.Controls.Add(this.trackBar6);
             this.Controls.Add(this.trackBar5);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.Brightness);
-            this.Controls.Add(this.Sepia);
-            this.Controls.Add(this.Make_Gray);
             this.Controls.Add(this.RGBList);
             this.Controls.Add(this.trackBar4);
             this.Controls.Add(this.trackBar3);
@@ -572,9 +662,7 @@
             this.Controls.Add(this.button5);
             this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.hScrollBar1);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.imageBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.imageBox1);
@@ -604,10 +692,8 @@
         private Emgu.CV.UI.ImageBox imageBox1;
         private System.Windows.Forms.Button button1;
         private Emgu.CV.UI.ImageBox imageBox2;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.HScrollBar hScrollBar1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.Button button5;
@@ -617,34 +703,42 @@
         private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.TrackBar trackBar4;
         private System.Windows.Forms.CheckedListBox RGBList;
-        private System.Windows.Forms.Button Make_Gray;
-        private System.Windows.Forms.Button Sepia;
-        private System.Windows.Forms.Button Brightness;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TrackBar trackBar5;
         private System.Windows.Forms.TrackBar trackBar6;
         private System.Windows.Forms.TrackBar trackBar7;
         private System.Windows.Forms.TrackBar trackBar8;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button13;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Button button15;
         private System.Windows.Forms.TrackBar trackBar9;
         private System.Windows.Forms.TrackBar trackBar10;
-        private System.Windows.Forms.Button button16;
         private System.Windows.Forms.TrackBar trackBar11;
         private System.Windows.Forms.TrackBar trackBar12;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox LR_1;
         private System.Windows.Forms.ListBox LR_2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbForScale;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox LR_3;
+        private System.Windows.Forms.Button Accept_but;
+        private System.Windows.Forms.TextBox tbY;
+        private System.Windows.Forms.TextBox tbForComma;
+        private System.Windows.Forms.Label labelComma;
+        private System.Windows.Forms.Label labelComma1;
+        private System.Windows.Forms.TextBox tbYcomma;
+        private System.Windows.Forms.Button but_quarter1;
+        private System.Windows.Forms.Button but_quarter2;
+        private System.Windows.Forms.Button but_quarter3;
+        private System.Windows.Forms.Button but_quarter4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ListBox LR_4;
+        private System.Windows.Forms.ListBox LR_5;
+        private System.Windows.Forms.ListBox LR_6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.ListBox LR_7;
     }
 }
 

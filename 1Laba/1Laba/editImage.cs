@@ -15,6 +15,8 @@ namespace _1Laba
     public class editImage
     {
         private double value;
+        private PointF[] pts = new PointF[4];
+
         public Image<Bgr, byte> loadfunction(Image<Bgr, byte> image)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -370,18 +372,249 @@ namespace _1Laba
             }
             return destImage;
         }
-        public Image<Hsv, byte> editHSV(Image<Bgr, byte> sourceImage, double value, int value1)
+        public Image<Hsv, byte> editHSV(Image<Bgr, byte> sourceImage,int value, double value1)
         {
             Image<Hsv, byte> imageHsv = sourceImage.Convert<Hsv, byte>();
             for (int y = 0; y < imageHsv.Size.Height; y++)
             {
                 for (int x = 0; x < imageHsv.Size.Width; x++)
                 {
-                    imageHsv.Data[y, x, value1] = (byte)value;
+                    imageHsv.Data[y, x, value] = (byte)value1;
 
                 }
             }
             return imageHsv;
         }
+        public Image<Bgr, byte> editScale(Image<Bgr, byte> sourceImage,double k)
+        {
+            Image<Bgr, byte> scaleImg = new Image<Bgr, byte>((int)(sourceImage.Width*k), (int)(sourceImage.Height * k));
+            for (int i = 0; i < scaleImg.Width;i++)
+                for (int j = 0; j < scaleImg.Height; j++)
+                {
+                    int oldI = (int)(i / k);
+                    int oldJ = (int)(j / k);
+                    scaleImg[j, i] = sourceImage[oldJ, oldI]; 
+                }
+            
+            return scaleImg;
+        }
+
+        public Image<Bgr, byte> editBiScale(Image<Bgr, byte> sourceImage, double k)
+        {
+            Image<Bgr, byte> scaleImg = new Image<Bgr, byte>((int)(sourceImage.Width * k), (int)(sourceImage.Height * k));
+            for (int i = 0; i < scaleImg.Width-1; i++)
+                for (int j = 0; j < scaleImg.Height-1; j++)
+                {
+                    double I = (i / k);
+                    double J = (j / k);
+                    
+
+                    double baseI = Math.Floor(I);
+                    double baseJ = Math.Floor(J);
+                    if (baseI >= sourceImage.Width - 1) continue;
+                    if (baseJ >= sourceImage.Height - 1) continue;
+
+                    double rI = I - baseI;
+                    double rJ = J - baseJ;
+
+                    double irI = 1 - rI;
+                    double irJ = 1 - rJ;
+
+                    Bgr c1 = new Bgr();
+                    c1.Blue = sourceImage.Data[(int)baseJ, (int)baseI, 0] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 0] * rI;
+                    c1.Green = sourceImage.Data[(int)baseJ, (int)baseI, 1] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 1] * rI;
+                    c1.Red = sourceImage.Data[(int)baseJ, (int)baseI, 2] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 2] * rI;
+
+                    Bgr c2 = new Bgr();
+                    c2.Blue = sourceImage.Data[(int)(baseJ+1), (int)baseI, 0] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 0] * rI;
+                    c2.Green = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 1] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 1] * rI;
+                    c2.Red = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 2] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 2] * rI;
+
+                    Bgr c = new Bgr();
+                    c.Blue = c1.Blue * irJ + c2.Blue * rJ;
+                    c.Green = c1.Green * irJ + c2.Green * rJ;
+                    c.Red = c1.Red * irJ + c2.Red * rJ;
+
+                    scaleImg[j, i] = c;
+                }
+
+            return scaleImg;
+        }
+        public Image<Bgr,byte> editShift(Image<Bgr, byte> sourceImage, double x, double y, double cx, double cy)
+        {
+
+            double sx = x+cx;
+            double sy = y+cy;
+            Image<Bgr, byte> shiftedImg = new Image<Bgr, byte>((int)(sourceImage.Width), (int)(sourceImage.Height));
+            if (sy == 0)
+            {
+                for (int i = 0; i < shiftedImg.Width - 1; i++)
+                    for (int j = 0; j < shiftedImg.Height - 1; j++)
+                    {
+                        double I = (i + sx * (shiftedImg.Height - j));
+                        double J = j;
+
+                        double baseI = Math.Floor(I);
+                        double baseJ = Math.Floor(J);
+
+                        if (baseI >= sourceImage.Width - 1) continue;
+                        if (baseJ >= sourceImage.Height - 1) continue;
+
+                        double rI = I - baseI;
+                        double rJ = J - baseJ;
+
+                        double irI = 1 - rI;
+                        double irJ = 1 - rJ;
+
+                        Bgr c1 = new Bgr();
+                        c1.Blue = sourceImage.Data[(int)baseJ, (int)baseI, 0] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 0] * rI;
+                        c1.Green = sourceImage.Data[(int)baseJ, (int)baseI, 1] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 1] * rI;
+                        c1.Red = sourceImage.Data[(int)baseJ, (int)baseI, 2] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 2] * rI;
+
+                        Bgr c2 = new Bgr();
+                        c2.Blue = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 0] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 0] * rI;
+                        c2.Green = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 1] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 1] * rI;
+                        c2.Red = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 2] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 2] * rI;
+
+                        Bgr c = new Bgr();
+
+                        c.Blue = c1.Blue * irJ + c2.Blue * rJ;
+                        c.Green = c1.Green * irJ + c2.Green * rJ;
+                        c.Red = c1.Red * irJ + c2.Red * rJ;
+
+                        shiftedImg[j, i] = c;
+                    }
+            }
+            if (sx == 0)
+            {
+                for (int i = 0; i < shiftedImg.Width - 1; i++)
+                    for (int j = 0; j < shiftedImg.Height - 1; j++)
+                    {
+                        double I = i;
+                        double J = j + sy * (shiftedImg.Width - i);
+
+                        double baseI = Math.Floor(I);
+                        double baseJ = Math.Floor(J);
+
+                        if (baseI >= sourceImage.Width - 1) continue;
+                        if (baseJ >= sourceImage.Height - 1) continue;
+
+                        double rI = I - baseI;
+                        double rJ = J - baseJ;
+
+                        double irI = 1 - rI;
+                        double irJ = 1 - rJ;
+
+                        Bgr c1 = new Bgr();
+                        c1.Blue = sourceImage.Data[(int)baseJ, (int)baseI, 0] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 0] * rI;
+                        c1.Green = sourceImage.Data[(int)baseJ, (int)baseI, 1] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 1] * rI;
+                        c1.Red = sourceImage.Data[(int)baseJ, (int)baseI, 2] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 2] * rI;
+
+                        Bgr c2 = new Bgr();
+                        c2.Blue = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 0] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 0] * rI;
+                        c2.Green = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 1] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 1] * rI;
+                        c2.Red = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 2] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 2] * rI;
+
+                        Bgr c = new Bgr();
+
+                        c.Blue = c1.Blue * irJ + c2.Blue * rJ;
+                        c.Green = c1.Green * irJ + c2.Green * rJ;
+                        c.Red = c1.Red * irJ + c2.Red * rJ;
+
+                        shiftedImg[j, i] = c;
+                    }
+            }
+            return shiftedImg;
+        }
+        public Image<Bgr, byte> editRotate(Image<Bgr, byte> sourceImage,Point p, double  ang)
+        {
+            Image<Bgr, byte> rotateimage = sourceImage.CopyBlank();
+
+            for (int i = 0; i < rotateimage.Width - 1; i++)
+            {
+                for (int j = 0; j < rotateimage.Height - 1; j++)
+                {
+                    int newI = Convert.ToInt32(Math.Cos(ang) * (j - p.X) - Math.Sin(ang) * (i - p.Y) + p.X);
+                    int newJ = Convert.ToInt32(Math.Sin(ang) * (j - p.X) + (Math.Cos(ang)) * (i - p.Y) + p.Y);
+                    if (newI <= (rotateimage.Width - 1) && newI >= 0 && newJ <= (rotateimage.Height - 1) && newJ >= 0)
+                    {
+
+                        double I = newI;
+                        double J = newJ;
+
+                        double baseI = Math.Floor(I);
+                        double baseJ = Math.Floor(J);
+
+                        if (baseI >= sourceImage.Width - 1) continue;
+                        if (baseJ >= sourceImage.Height - 1) continue;
+
+                        double rI = I - baseI;
+                        double rJ = J - baseJ;
+
+                        double irI =  1- rI ;
+                        double irJ = 1 - rJ ;
+
+                        Bgr c1 = new Bgr();
+                        c1.Blue = sourceImage.Data[(int)baseJ, (int)baseI, 0] * irI + sourceImage.Data[(int)baseJ, (int)(baseI + 1), 0] * rI;
+                        c1.Green = sourceImage.Data[(int)baseJ, (int)baseI, 1] * irI + sourceImage.Data[(int)baseJ, (int)(baseI + 1), 1] * rI;
+                        c1.Red = sourceImage.Data[(int)baseJ, (int)baseI, 2] * irI + sourceImage.Data[(int)baseJ, (int)(baseI + 1), 2] * rI;
+
+                        Bgr c2 = new Bgr();
+                        c2.Blue = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 0] * irI + sourceImage.Data[(int)(baseJ + 1), (int)(baseI + 1), 0] * rI;
+                        c2.Green = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 1] * irI + sourceImage.Data[(int)(baseJ + 1), (int)(baseI + 1), 1] * rI;
+                        c2.Red = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 2] * irI + sourceImage.Data[(int)(baseJ + 1), (int)(baseI + 1), 2] * rI;
+
+                        Bgr c = new Bgr();
+                        c.Blue = c1.Blue * irJ + c2.Blue * rJ;
+                        c.Green = c1.Green * irJ + c2.Green * rJ;
+                        c.Red = c1.Red * irJ + c2.Red * rJ;
+
+                        rotateimage[j, i] = c;
+                    }
+                }
+            }
+            return rotateimage;
+        }
+        public Image<Bgr, byte> editPoint(Image<Bgr, byte> sourceImage, PointF[] pts)
+        {
+            var srcPoints = pts;
+
+            var destPoints = new PointF[]
+            {
+                new PointF(0, 0),
+                new PointF(0, sourceImage.Height - 1),
+                new PointF(sourceImage.Width - 1, sourceImage.Height - 1),
+                new PointF(sourceImage.Width - 1, 0)
+            };
+
+            var homographyMatrix = CvInvoke.GetPerspectiveTransform(srcPoints, destPoints);
+            var imgCopy = new Image<Bgr, byte>(sourceImage.Size);
+            CvInvoke.WarpPerspective(sourceImage, imgCopy, homographyMatrix, imgCopy.Size);
+            return imgCopy;           
+        }
+        public Image<Bgr, byte> editFlip(Image<Bgr, byte> sourceImage, int k1, int k2)
+        {
+            Image<Bgr, byte> flipedimage = sourceImage.Copy();
+            for (int i = 0; i < sourceImage.Width - 1; i++)
+            {
+                for (int j = 0; j < sourceImage.Height - 1; j++)
+                {
+                    int newX = i;
+                    int newY = j;
+                    if (k1 == -1)
+                    {
+                        newX = i * k1 + sourceImage.Width - 1;
+                    }
+                    if (k2 == -1)
+                    {
+                        newY = j * k2 + sourceImage.Height - 1;
+                    }
+
+                    flipedimage[newY, newX] = sourceImage[j, i];
+                }
+            }
+            return flipedimage;
+        }
+
     }
 }
