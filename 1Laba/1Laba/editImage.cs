@@ -16,6 +16,7 @@ namespace _1Laba
     {
         private double value;
         private PointF[] pts = new PointF[4];
+        private int delta = 10;
 
         public Image<Bgr, byte> loadfunction(Image<Bgr, byte> image)
         {
@@ -616,5 +617,149 @@ namespace _1Laba
             return flipedimage;
         }
 
+        public Image<Gray, byte> edit_Noise_and_Brightness(Image<Bgr, byte> sourceImage, double k2)
+        {
+            var grayImage = sourceImage.Convert<Gray, byte>();
+
+            var bluredImage = grayImage.SmoothGaussian(5);
+            var color = new Gray(255);
+            var binarizedImage = bluredImage.ThresholdBinary(new Gray(k2), color);
+
+            return binarizedImage;
+        }
+
+        public Image<Bgr, byte> edit_contours(Image<Bgr, byte> sourceImage, double k2,int thicc)
+        {
+            Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage,k2);
+            var contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(
+                binarizedImage,
+                contours,
+                null,
+                RetrType.List,
+                ChainApproxMethod.ChainApproxSimple);
+
+            var contoursImage = sourceImage.Copy();
+            for (int i = 0; i < contours.Size; i++)
+            {
+                var points = contours[i].ToArray();
+                contoursImage.Draw(points, new Bgr(Color.GreenYellow), thicc);
+            }
+
+            return contoursImage;
+        }
+        public Image<Bgr, byte> findTriangles(Image<Bgr, byte> sourceImage, double k2, int thicc, int tresh)
+        {
+            Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage, k2);
+            var contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(
+                binarizedImage,
+                contours,
+                null,
+                RetrType.List,
+                ChainApproxMethod.ChainApproxSimple);
+
+            var contoursImage = sourceImage.Copy();
+
+            var approxContour = new VectorOfPoint();
+
+            for (int i = 0; i < contours.Size; i++)
+            {
+                CvInvoke.ApproxPolyDP(
+                    contours[i],
+                    approxContour,
+                    CvInvoke.ArcLength(contours[i], true) * 0.05,
+                    true);
+                if (CvInvoke.ContourArea(approxContour, false) > tresh)
+                {
+
+                    if (approxContour.Size == 3)
+                    {
+                        var points = approxContour.ToArray();
+                        contoursImage.Draw(new Triangle2DF(points[0], points[1], points[2]),
+                        new Bgr(Color.GreenYellow), thicc);
+                    }
+                }
+            }
+
+            return contoursImage;
+        }
+        public Image<Bgr, byte> findRectangles(Image<Bgr, byte> sourceImage, double k2, int thicc, int tresh)
+        {
+            Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage, k2);
+            var contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(
+                binarizedImage,
+                contours,
+                null,
+                RetrType.List,
+                ChainApproxMethod.ChainApproxSimple);
+
+            var contoursImage = sourceImage.Copy();
+
+            var approxContour = new VectorOfPoint();
+
+            for (int i = 0; i < contours.Size; i++)
+            {
+                CvInvoke.ApproxPolyDP(
+                    contours[i],
+                    approxContour,
+                    CvInvoke.ArcLength(contours[i], true) * 0.05,
+                    true);
+
+                if (CvInvoke.ContourArea(approxContour, false) > tresh)
+                {
+                    var points = approxContour.ToArray();
+                    if (isRectangle(points, delta) == true)
+                    {
+                        contoursImage.Draw(CvInvoke.MinAreaRect(approxContour), new Bgr(Color.GreenYellow), thicc);
+                    }
+                }
+            }
+            return contoursImage;
+        }
+        private bool isRectangle(Point[] points, int delta)
+        {
+            LineSegment2D[] edges = PointCollection.PolyLine(points, true);
+            for (int i = 0; i < edges.Length; i++)
+            {
+                double angle = Math.Abs(edges[(i + 1) %
+                edges.Length].GetExteriorAngleDegree(edges[i]));
+                if (angle < 90 - delta || angle > 90 + delta)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public Image<Bgr, byte> findCirkle(Image<Bgr, byte> sourceImage, int tb12, int tb1, int tb10, int tb9)
+        {
+            var grayImage = sourceImage.Convert<Gray, byte>();
+            var bluredImage = grayImage.SmoothGaussian(9);
+
+            List<CircleF> circles = new List<CircleF>(CvInvoke.HoughCircles(bluredImage,
+                 HoughModes.Gradient,
+                 1.0,
+                 tb12,
+                 100,
+                 tb1,
+                 tb10,
+                 tb9));
+
+            var resultImage = sourceImage.Copy();
+            foreach (CircleF circle in circles)
+            {
+                resultImage.Draw(circle, new Bgr(Color.Blue), 2);
+            }
+
+            return resultImage.Resize(640, 480, Inter.Linear);
+        }
+        public Image<Gray, byte> colorfind(Image<Bgr, byte> sourceImage, byte k1, byte k2)
+        {
+            var hsvImage = sourceImage.Convert<Hsv, byte>();
+            var hueChannel = hsvImage.Split()[0];
+            var resultImage = hueChannel.InRange(new Gray(k1 - k2), new Gray(k2 + k2));
+            return resultImage;
+        }
     }
 }

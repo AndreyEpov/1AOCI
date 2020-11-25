@@ -24,13 +24,14 @@ namespace _1Laba
         double cannyThresholdLinking;
         int choice = 0;
         editImage newImage = new editImage();
-        private int tb1, tb2, tb3, tb4,tb11 = 0;
+        private int tb1 = 50, tb2, tb3, tb4,tb11 = 0,tb13=5;
         private double tb5 = 10, tb6 = 0, tb7 = 5, tb8 = 5, tb9 = 126, tb10 = 100, tb12 = 0;
         const int x1 = 500, x2 = 500, x3 = 500, x4 = 500 , y1 = 520, y2 = 560, y3 = 600, y4 = 640;
         private int numPts = 0;
         PointF[] pts = new PointF[4];
         Point pointRotate;
         int k1=1,k2=1;
+        int numberAngle = 0;
 
         private int[,] mass = new int[3, 3]
             {
@@ -195,12 +196,16 @@ namespace _1Laba
             trackBar10.Visible = false;
             trackBar11.Visible = false;
             trackBar12.Visible = false;
+            trackBar13.Visible = false;
             RGBList.Visible = false;
             Accept_but.Visible = false;
             but_quarter1.Visible = false;
             but_quarter2.Visible = false;
             but_quarter3.Visible = false;
             but_quarter4.Visible = false;
+            butCirkle.Visible = false;
+            butRectangle.Visible = false;
+            butTri.Visible = false;
         }
 
         private void Make_Gray_Click(object sender, EventArgs e)
@@ -494,6 +499,85 @@ namespace _1Laba
         {
             visibleLR_false();
             visibleLR_true();
+        }
+
+        private void LR_4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (LR_5.SelectedIndex != -1)
+                LR_5.SetSelected(LR_5.SelectedIndex, false);
+            if (LR_6.SelectedIndex != -1)
+                LR_6.SetSelected(LR_6.SelectedIndex, false);
+            tbHide();
+            if (LR_4.SelectedIndex == 0)
+            {
+                choice = 25;
+                //tbForScale.Visible = true;
+                trackBar12.Visible = true; //порог
+            }
+            if (LR_4.SelectedIndex == 1)
+            {
+                choice = 26;
+                trackBar12.Visible = true;
+                trackBar13.Visible = true;
+            }
+            if (LR_4.SelectedIndex == 2)
+            {
+                choice = 27;
+                butTri.Visible = true;
+                butRectangle.Visible = true;
+                butCirkle.Visible = true;
+            }
+
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void butTri_Click(object sender, EventArgs e)
+        {
+            tbHide();
+            numberAngle = 0;
+            butTri.Visible = true;
+            butRectangle.Visible = true;
+            butCirkle.Visible = true;
+            trackBar13.Visible = true;
+            trackBar1.Visible = true;
+            trackBar12.Visible = true;
+
+        }
+
+        private void butRectangle_Click(object sender, EventArgs e)
+        {
+            tbHide();
+            numberAngle = 1;
+            butTri.Visible = true;
+            butRectangle.Visible = true;
+            butCirkle.Visible = true;
+            trackBar13.Visible = true;
+
+            trackBar1.Visible = true;
+            trackBar12.Visible = true;
+        }
+
+        private void butCirkle_Click(object sender, EventArgs e)
+        {
+            tbHide();
+            numberAngle = 2;
+            butTri.Visible = true;
+            butRectangle.Visible = true;
+            butCirkle.Visible = true;
+            trackBar9.Visible = true;
+            trackBar10.Visible = true;
+
+            trackBar1.Visible = true;
+            trackBar12.Visible = true;
+        }
+
+        private void trackBar13_Scroll(object sender, EventArgs e)
+        {
+            tb13 = trackBar13.Value;
         }
 
         private void but_quarter1_Click(object sender, EventArgs e)
@@ -807,6 +891,33 @@ namespace _1Laba
             }
             if (choice == 24)
                 imageBox2.Image = newImage.editHSV(sourceImage.Resize(640, 480, Inter.Linear), tb11,tb12);
+            if (choice == 25)
+            {
+                imageBox2.Image = newImage.edit_Noise_and_Brightness(sourceImage.Resize(640, 480, Inter.Linear), tb12);
+            }
+            if (choice == 26)
+            {
+                imageBox2.Image = newImage.edit_contours(sourceImage.Resize(640, 480, Inter.Linear), tb12,tb13);
+            }
+            if (choice == 27)
+            {
+                if (numberAngle == 0)
+                {
+                    imageBox2.Image = newImage.findTriangles(sourceImage.Resize(640, 480, Inter.Linear), tb12, tb13, tb1);
+                }
+                if (numberAngle == 1)
+                {
+                    imageBox2.Image = newImage.findRectangles(sourceImage.Resize(640, 480, Inter.Linear), tb12, tb13, tb1);
+                }
+
+                if (numberAngle == 2)
+                {
+                    imageBox2.Image = newImage.findCirkle(sourceImage.Resize(640, 480, Inter.Linear), trackBar12.Value, tb1, trackBar10.Value, trackBar9.Value);
+                    
+                }
+
+            }
+
 
         }
 

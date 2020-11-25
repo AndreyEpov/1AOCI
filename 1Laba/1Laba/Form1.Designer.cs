@@ -79,6 +79,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.LR_7 = new System.Windows.Forms.ListBox();
+            this.trackBar13 = new System.Windows.Forms.TrackBar();
+            this.butTri = new System.Windows.Forms.Button();
+            this.butRectangle = new System.Windows.Forms.Button();
+            this.butCirkle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -93,6 +97,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar13)).BeginInit();
             this.SuspendLayout();
             // 
             // imageBox1
@@ -268,7 +273,7 @@
             // 
             // trackBar9
             // 
-            this.trackBar9.Location = new System.Drawing.Point(372, 669);
+            this.trackBar9.Location = new System.Drawing.Point(1011, 677);
             this.trackBar9.Maximum = 255;
             this.trackBar9.Name = "trackBar9";
             this.trackBar9.Size = new System.Drawing.Size(336, 45);
@@ -548,13 +553,14 @@
             // 
             this.LR_4.FormattingEnabled = true;
             this.LR_4.Items.AddRange(new object[] {
-            "Canny",
-            "Cell_Shading",
-            "Video"});
+            "Pre-processing ",
+            "Search approximated contours",
+            "Search for primitives"});
             this.LR_4.Location = new System.Drawing.Point(15, 528);
             this.LR_4.Name = "LR_4";
             this.LR_4.Size = new System.Drawing.Size(86, 186);
             this.LR_4.TabIndex = 65;
+            this.LR_4.SelectedIndexChanged += new System.EventHandler(this.LR_4_SelectedIndexChanged);
             // 
             // LR_5
             // 
@@ -596,7 +602,6 @@
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(49, 17);
             this.radioButton3.TabIndex = 69;
-            this.radioButton3.TabStop = true;
             this.radioButton3.Text = "7 ЛР";
             this.radioButton3.UseVisualStyleBackColor = true;
             this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
@@ -613,11 +618,55 @@
             this.LR_7.Size = new System.Drawing.Size(327, 186);
             this.LR_7.TabIndex = 70;
             // 
+            // trackBar13
+            // 
+            this.trackBar13.Location = new System.Drawing.Point(801, 669);
+            this.trackBar13.Minimum = 1;
+            this.trackBar13.Name = "trackBar13";
+            this.trackBar13.Size = new System.Drawing.Size(104, 45);
+            this.trackBar13.TabIndex = 71;
+            this.trackBar13.Value = 5;
+            this.trackBar13.Scroll += new System.EventHandler(this.trackBar13_Scroll);
+            // 
+            // butTri
+            // 
+            this.butTri.Location = new System.Drawing.Point(570, 641);
+            this.butTri.Name = "butTri";
+            this.butTri.Size = new System.Drawing.Size(75, 23);
+            this.butTri.TabIndex = 72;
+            this.butTri.Text = "Triangle";
+            this.butTri.UseVisualStyleBackColor = true;
+            this.butTri.Click += new System.EventHandler(this.butTri_Click);
+            // 
+            // butRectangle
+            // 
+            this.butRectangle.Location = new System.Drawing.Point(570, 669);
+            this.butRectangle.Name = "butRectangle";
+            this.butRectangle.Size = new System.Drawing.Size(75, 23);
+            this.butRectangle.TabIndex = 73;
+            this.butRectangle.Text = "Rectangle";
+            this.butRectangle.UseVisualStyleBackColor = true;
+            this.butRectangle.Click += new System.EventHandler(this.butRectangle_Click);
+            // 
+            // butCirkle
+            // 
+            this.butCirkle.Location = new System.Drawing.Point(570, 698);
+            this.butCirkle.Name = "butCirkle";
+            this.butCirkle.Size = new System.Drawing.Size(75, 23);
+            this.butCirkle.TabIndex = 74;
+            this.butCirkle.Text = "Cirkle";
+            this.butCirkle.UseVisualStyleBackColor = true;
+            this.butCirkle.Click += new System.EventHandler(this.butCirkle_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.butCirkle);
+            this.Controls.Add(this.butRectangle);
+            this.Controls.Add(this.butTri);
+            this.Controls.Add(this.trackBar13);
             this.Controls.Add(this.LR_7);
             this.Controls.Add(this.radioButton3);
             this.Controls.Add(this.label7);
@@ -682,6 +731,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar13)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -739,6 +789,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.ListBox LR_7;
+        private System.Windows.Forms.TrackBar trackBar13;
+        private System.Windows.Forms.Button butTri;
+        private System.Windows.Forms.Button butRectangle;
+        private System.Windows.Forms.Button butCirkle;
     }
 }
 
