@@ -17,7 +17,7 @@ namespace _1Laba
         private double value;
         private PointF[] pts = new PointF[4];
         private int delta = 10;
-
+        private int number;
         public Image<Bgr, byte> loadfunction(Image<Bgr, byte> image)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -650,6 +650,7 @@ namespace _1Laba
         }
         public Image<Bgr, byte> findTriangles(Image<Bgr, byte> sourceImage, double k2, int thicc, int tresh)
         {
+            number = 0;
             Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage, k2);
             var contours = new VectorOfVectorOfPoint();
             CvInvoke.FindContours(
@@ -678,6 +679,7 @@ namespace _1Laba
                         var points = approxContour.ToArray();
                         contoursImage.Draw(new Triangle2DF(points[0], points[1], points[2]),
                         new Bgr(Color.GreenYellow), thicc);
+                        number++;
                     }
                 }
             }
@@ -686,6 +688,7 @@ namespace _1Laba
         }
         public Image<Bgr, byte> findRectangles(Image<Bgr, byte> sourceImage, double k2, int thicc, int tresh)
         {
+            number = 0;
             Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage, k2);
             var contours = new VectorOfVectorOfPoint();
             CvInvoke.FindContours(
@@ -713,6 +716,7 @@ namespace _1Laba
                     if (isRectangle(points, delta) == true)
                     {
                         contoursImage.Draw(CvInvoke.MinAreaRect(approxContour), new Bgr(Color.GreenYellow), thicc);
+                        number++;
                     }
                 }
             }
@@ -732,34 +736,36 @@ namespace _1Laba
             }
             return true;
         }
-        public Image<Bgr, byte> findCirkle(Image<Bgr, byte> sourceImage, int tb12, int tb1, int tb10, int tb9)
+        public Image<Bgr, byte> findCirkle(Image<Bgr, byte> sourceImage,int minDist,int tresh,int minRad,int maxRad)
         {
+            number = 0;
             var grayImage = sourceImage.Convert<Gray, byte>();
             var bluredImage = grayImage.SmoothGaussian(9);
 
             List<CircleF> circles = new List<CircleF>(CvInvoke.HoughCircles(bluredImage,
                  HoughModes.Gradient,
                  1.0,
-                 tb12,
+                 minDist,//min dist
                  100,
-                 tb1,
-                 tb10,
-                 tb9));
+                 tresh,//treshold
+                 minRad,//min rad
+                 maxRad));//max rad
 
             var resultImage = sourceImage.Copy();
             foreach (CircleF circle in circles)
             {
                 resultImage.Draw(circle, new Bgr(Color.Blue), 2);
+                number++;
             }
 
             return resultImage.Resize(640, 480, Inter.Linear);
         }
-        public Image<Gray, byte> colorfind(Image<Bgr, byte> sourceImage, byte k1, byte k2)
+
+        public string Number_of_Figure()
         {
-            var hsvImage = sourceImage.Convert<Hsv, byte>();
-            var hueChannel = hsvImage.Split()[0];
-            var resultImage = hueChannel.InRange(new Gray(k1 - k2), new Gray(k2 + k2));
-            return resultImage;
+            string s = number.ToString();
+            return s;
         }
+
     }
 }

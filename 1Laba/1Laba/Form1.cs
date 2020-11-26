@@ -206,6 +206,16 @@ namespace _1Laba
             butCirkle.Visible = false;
             butRectangle.Visible = false;
             butTri.Visible = false;
+            label8.Visible = false;
+            label9.Visible = false;
+            label10.Visible = false;
+            label11.Visible = false;
+            label12.Visible = false;
+            label13.Visible = false;
+            label14.Visible = false;
+            label15.Visible = false;
+            label16.Visible = false;
+            label17.Visible = false;
         }
 
         private void Make_Gray_Click(object sender, EventArgs e)
@@ -526,6 +536,7 @@ namespace _1Laba
                 butTri.Visible = true;
                 butRectangle.Visible = true;
                 butCirkle.Visible = true;
+
             }
 
         }
@@ -537,6 +548,8 @@ namespace _1Laba
 
         private void butTri_Click(object sender, EventArgs e)
         {
+            label16.Text = "--------";
+            label17.Text = "--------";
             tbHide();
             numberAngle = 0;
             butTri.Visible = true;
@@ -546,10 +559,19 @@ namespace _1Laba
             trackBar1.Visible = true;
             trackBar12.Visible = true;
 
+            label12.Visible = true;
+            label13.Visible = true;
+            label14.Visible = true;
+            label15.Visible = true;
+            label16.Visible = true;
+            label17.Visible = true;
+
         }
 
         private void butRectangle_Click(object sender, EventArgs e)
         {
+            label17.Text = "--------";
+            label15.Text = "--------";
             tbHide();
             numberAngle = 1;
             butTri.Visible = true;
@@ -559,10 +581,19 @@ namespace _1Laba
 
             trackBar1.Visible = true;
             trackBar12.Visible = true;
+
+            label12.Visible = true;
+            label13.Visible = true;
+            label14.Visible = true;
+            label15.Visible = true;
+            label16.Visible = true;
+            label17.Visible = true;
         }
 
         private void butCirkle_Click(object sender, EventArgs e)
         {
+            label16.Text = "--------";
+            label15.Text = "--------";
             tbHide();
             numberAngle = 2;
             butTri.Visible = true;
@@ -573,6 +604,27 @@ namespace _1Laba
 
             trackBar1.Visible = true;
             trackBar12.Visible = true;
+            label8.Visible = true;
+            label9.Visible = true;
+            label10.Visible = true;
+            label11.Visible = true;
+            label12.Visible = true;
+            label13.Visible = true;
+            label14.Visible = true;
+            label15.Visible = true;
+            label16.Visible = true;
+            label17.Visible = true;
+
+
+            trackBar1.Value = 36;
+            trackBar10.Maximum = 100;
+            trackBar10.Value = 100;
+            trackBar9.Maximum = 500;
+            trackBar9.Value = 500;
+            trackBar1.Minimum = 1;
+            trackBar12.Minimum = 1;
+            trackBar12.Maximum = 500;
+            trackBar12.Value = 250;
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)
@@ -903,18 +955,22 @@ namespace _1Laba
             {
                 if (numberAngle == 0)
                 {
+                    label15.Text = newImage.Number_of_Figure();
                     imageBox2.Image = newImage.findTriangles(sourceImage.Resize(640, 480, Inter.Linear), tb12, tb13, tb1);
                 }
                 if (numberAngle == 1)
                 {
+                    label16.Text = newImage.Number_of_Figure();
                     imageBox2.Image = newImage.findRectangles(sourceImage.Resize(640, 480, Inter.Linear), tb12, tb13, tb1);
                 }
 
                 if (numberAngle == 2)
                 {
+                    label17.Text = newImage.Number_of_Figure();
                     imageBox2.Image = newImage.findCirkle(sourceImage.Resize(640, 480, Inter.Linear), trackBar12.Value, tb1, trackBar10.Value, trackBar9.Value);
-                    
+
                 }
+
 
             }
 
