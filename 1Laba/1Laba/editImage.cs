@@ -767,5 +767,49 @@ namespace _1Laba
             return s;
         }
 
+        public Image<Gray, byte> editBinarize(Image<Bgr, byte> sourceImage, int k1, bool k2)//Белый текст на чёрном фоне надо получить
+        {
+            var grayImage = sourceImage.Convert<Gray, byte>();
+            Image<Gray, byte> binarizedImage;
+            if (k2 == true)
+            {
+                binarizedImage = grayImage.ThresholdBinaryInv(new Gray(k1), new Gray(255));
+            }
+            else
+            {
+                binarizedImage = grayImage.ThresholdBinary(new Gray(k1), new Gray(255));
+            }
+
+            return binarizedImage;
+        }
+        public Image<Gray, byte> editDilatade(Image<Bgr, byte> sourceImage, int k1, bool k2, int k3)
+        {
+            var binarizedImage = editBinarize(sourceImage, k1, k2);
+
+            var dilatedImage = binarizedImage.Dilate(k3);
+
+            return dilatedImage;
+        }
+        public Image<Bgr, byte> editRoiFinder(Image<Bgr, byte> sourceImage, int k1, bool k2, int k3, List<Rectangle> rois)
+        {
+            var dilatedImage = editDilatade(sourceImage, k1, k2, k3);
+
+            var contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(dilatedImage, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+            var img = sourceImage.Copy();
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (CvInvoke.ContourArea(contours[i], false) > (50))
+                {
+                    Rectangle rect = CvInvoke.BoundingRectangle(contours[i]);
+                    rois.Add(rect);
+
+                    img.Draw(rect, new Bgr(Color.Green), 2);
+                }
+            }
+
+            return img;
+        }
+
     }
 }

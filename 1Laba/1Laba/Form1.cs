@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 namespace _1Laba
@@ -32,6 +33,7 @@ namespace _1Laba
         Point pointRotate;
         int k1=1,k2=1;
         int numberAngle = 0;
+        List<Rectangle> rois = new List<Rectangle>();
 
         private int[,] mass = new int[3, 3]
             {
@@ -52,6 +54,8 @@ namespace _1Laba
                 { 0,0,0}
 };
         int[,] mass3 = new int[3, 3];
+        private Tesseract ocr;
+
         //----------------------------------------------------------------------------------------------------------------------------------Начало формы
         public Form1()
         {
@@ -168,7 +172,7 @@ namespace _1Laba
         {
             tb4 = trackBar4.Value;
         }
-
+        //---------------------------------------------------------------------------------HIDE
         private void tbHide()
         {
             tbForComma.Clear();
@@ -216,8 +220,16 @@ namespace _1Laba
             label15.Visible = false;
             label16.Visible = false;
             label17.Visible = false;
-        }
 
+            Rus_radioBut.Visible = false;
+            Eng_radioBut.Visible = false;
+            checkBox1.Visible = false;
+            showText.Visible = false;
+            showTextLb.Visible = false;
+            guide5Lr.Visible = false;
+            dilateLb.Visible = false;
+        }
+        //---------------------------------------------------------------------------------HIDE
         private void Make_Gray_Click(object sender, EventArgs e)
         {
             choice = 5;
@@ -348,6 +360,30 @@ namespace _1Laba
                     imageBox2.Image = newImage.editPoint(sourceImage, pts);
                 }
 
+                if (choice == 30)
+                {
+                    
+                    rois.Clear();
+                    showText.Items.Clear();
+                    imageBox2.Image = newImage.editRoiFinder(sourceImage, trackBar1.Value, checkBox1.Checked, trackBar7.Value, rois);
+                    for (int i = 0; i < rois.Count; i++)
+                    {
+                        sourceImage.ROI = rois[i];
+                        var roiCopy = sourceImage.Copy();
+                        sourceImage.ROI = Rectangle.Empty;
+                        if(ocr == null)
+                        {
+                            MessageBox.Show("Choice language");
+                            Rus_radioBut.Checked = true;
+                        }
+                        ocr.SetImage(roiCopy);
+                        ocr.Recognize();
+                        string text = ocr.GetUTF8Text();
+                        showText.Items.Add(text);
+                    }
+                                   
+                }
+
 
             }
             catch
@@ -414,9 +450,12 @@ namespace _1Laba
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            visibleLR_false();
-            visibleLR_true();
+        {   
+            if(Rus_radioBut.Checked != true || Eng_radioBut.Checked != true)
+            {
+                visibleLR_false();
+                visibleLR_true();
+            }
         }
         private void visibleLR_false()
         {
@@ -501,14 +540,20 @@ namespace _1Laba
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            visibleLR_false();
-            visibleLR_true();
+            if (Rus_radioBut.Checked != true || Eng_radioBut.Checked != true)
+            {
+                visibleLR_false();
+                visibleLR_true();
+            }
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            visibleLR_false();
-            visibleLR_true();
+            if (Rus_radioBut.Checked != true || Eng_radioBut.Checked != true)
+            {
+                visibleLR_false();
+                visibleLR_true();
+            }
         }
 
         private void LR_4_SelectedIndexChanged(object sender, EventArgs e)
@@ -625,6 +670,67 @@ namespace _1Laba
             trackBar12.Minimum = 1;
             trackBar12.Maximum = 500;
             trackBar12.Value = 250;
+        }
+
+        private void LR_5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (LR_4.SelectedIndex != -1)
+                LR_4.SetSelected(LR_5.SelectedIndex, false);
+            if (LR_6.SelectedIndex != -1)
+                LR_6.SetSelected(LR_6.SelectedIndex, false);
+            tbHide();
+            checkBox1.Visible = true;
+            trackBar1.Visible = true;
+            trackBar1.Location = new Point(570, 640);
+            label11.Visible = true;  //treshhold
+            label11.Location = new Point(770, 640);
+            guide5Lr.Visible = true;
+            if (LR_5.SelectedIndex == 0)
+            {
+                choice = 28;
+
+
+            }
+            if (LR_5.SelectedIndex == 1)
+            {
+                choice = 29;
+                dilateLb.Visible = true;
+                dilateLb.Location = new Point(770, 700);
+                trackBar7.Visible = true;
+                trackBar7.Location = new Point(570, 700);
+            }
+            if (LR_5.SelectedIndex == 2)
+            {
+                choice = 30;
+                trackBar7.Visible = true;
+                Rus_radioBut.Visible = true;
+                Eng_radioBut.Visible = true;
+                showText.Visible = true;
+                dilateLb.Visible = true;
+                dilateLb.Location = new Point(770, 700);
+                trackBar7.Location = new Point(570, 700);
+            }
+        }
+
+        private void Rus_radioBut_CheckedChanged(object sender, EventArgs e)
+        {
+            if(Rus_radioBut.Checked == true)
+                ocr = new Tesseract("D:\\", "rus", OcrEngineMode.Default);
+        }
+
+        private void Eng_radioBut_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Eng_radioBut.Checked == true)
+                ocr = new Tesseract("D:\\", "eng", OcrEngineMode.Default);
+        }
+
+        private void showText_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sourceImage.ROI = rois[showText.SelectedIndex];
+            var roiCopy = sourceImage.Copy();
+            sourceImage.ROI = Rectangle.Empty;
+            imageBox2.Image = roiCopy;
+            showTextLb.Text = Convert.ToString(showText.SelectedItem);
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)
@@ -843,22 +949,30 @@ namespace _1Laba
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-
-
             if (choice == 0)
+            {
                 imageBox2.Image = sourceImage;
+            }
             if (choice == 1)
             {
                 imageBox2.Image = newImage.filterCanny(sourceImage, cannyThreshold, cannyThresholdLinking).Resize(640, 480, Inter.Linear);
             }
             if (choice == 2)
-                imageBox2.Image = newImage.thresholdFilter(sourceImage, cannyThreshold, cannyThresholdLinking, tb1,tb2,tb3,tb4).Resize(640, 480, Inter.Linear);
+            {
+                imageBox2.Image = newImage.thresholdFilter(sourceImage, cannyThreshold, cannyThresholdLinking, tb1, tb2, tb3, tb4).Resize(640, 480, Inter.Linear);
+            }    
             if (choice == 4 && RGBList.SelectedItem != null)
+            {
                 imageBox2.Image = newImage.editColourChanel(sourceImage.Resize(640, 480, Inter.Linear), RGBList);
+            }      
             if (choice == 5)
+            {
                 imageBox2.Image = newImage.grayAlgoritm(sourceImage.Resize(640, 480, Inter.Linear));
+            }
             if (choice == 6)
+            {
                 imageBox2.Image = newImage.Sepia(sourceImage.Resize(640, 480, Inter.Linear));
+            }              
             if (choice == 7)
             {
                 prevImage = sourceImage.Resize(640, 480, Inter.Linear);
@@ -890,15 +1004,25 @@ namespace _1Laba
                 }
             }
             if (choice == 11)
+            {
                 imageBox2.Image = newImage.editBlur(sourceImage.Resize(640, 480, Inter.Linear));
+            }            
             if (choice == 12)
+            {
                 imageBox2.Image = newImage.editMass(sourceImage.Resize(640, 480, Inter.Linear), mass);
+            }        
             if (choice == 13)
+            {
                 imageBox2.Image = newImage.editMass(sourceImage.Resize(640, 480, Inter.Linear), mass1);
+            }
             if (choice == 14)
+            {
                 imageBox2.Image = newImage.editMass(sourceImage.Resize(640, 480, Inter.Linear), mass2);
+            }
             if (choice == 15)
+            {
                 imageBox2.Image = newImage.editMass(sourceImage.Resize(640, 480, Inter.Linear), mass3);
+            }
             if (choice == 16)
             {
                 sourceImage = sourceImage.Resize(640, 480, Inter.Linear);
@@ -942,7 +1066,9 @@ namespace _1Laba
                 imageBox2.Image = newImage.editFlip(sourceImage, k1, k2);
             }
             if (choice == 24)
-                imageBox2.Image = newImage.editHSV(sourceImage.Resize(640, 480, Inter.Linear), tb11,tb12);
+            {
+                imageBox2.Image = newImage.editHSV(sourceImage.Resize(640, 480, Inter.Linear), tb11, tb12);
+            }
             if (choice == 25)
             {
                 imageBox2.Image = newImage.edit_Noise_and_Brightness(sourceImage.Resize(640, 480, Inter.Linear), tb12);
@@ -970,8 +1096,18 @@ namespace _1Laba
                     imageBox2.Image = newImage.findCirkle(sourceImage.Resize(640, 480, Inter.Linear), trackBar12.Value, tb1, trackBar10.Value, trackBar9.Value);
 
                 }
-
-
+            }
+            if (choice == 28)
+            {
+                imageBox2.Image = newImage.editBinarize(sourceImage, trackBar1.Value, checkBox1.Checked);
+            }
+            if (choice == 29)
+            {
+                imageBox2.Image = newImage.editDilatade(sourceImage, trackBar1.Value, checkBox1.Checked, trackBar7.Value);
+            }
+            if (choice == 30)
+            {
+                Accept_but.Show();
             }
 
 

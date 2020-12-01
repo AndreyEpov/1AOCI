@@ -93,6 +93,13 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.Rus_radioBut = new System.Windows.Forms.RadioButton();
+            this.Eng_radioBut = new System.Windows.Forms.RadioButton();
+            this.showText = new System.Windows.Forms.ListBox();
+            this.showTextLb = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.guide5Lr = new System.Windows.Forms.Label();
+            this.dilateLb = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -576,13 +583,14 @@
             // 
             this.LR_5.FormattingEnabled = true;
             this.LR_5.Items.AddRange(new object[] {
-            "Canny",
-            "Cell_Shading",
-            "Video"});
+            "Highlighting parts of img",
+            "Selecting and displaying an image section",
+            "Getting text"});
             this.LR_5.Location = new System.Drawing.Point(116, 528);
             this.LR_5.Name = "LR_5";
             this.LR_5.Size = new System.Drawing.Size(120, 186);
             this.LR_5.TabIndex = 66;
+            this.LR_5.SelectedIndexChanged += new System.EventHandler(this.LR_5_SelectedIndexChanged);
             // 
             // LR_6
             // 
@@ -758,11 +766,88 @@
             this.label17.TabIndex = 84;
             this.label17.Text = "--------";
             // 
+            // Rus_radioBut
+            // 
+            this.Rus_radioBut.AutoSize = true;
+            this.Rus_radioBut.Location = new System.Drawing.Point(931, 683);
+            this.Rus_radioBut.Name = "Rus_radioBut";
+            this.Rus_radioBut.Size = new System.Drawing.Size(44, 17);
+            this.Rus_radioBut.TabIndex = 85;
+            this.Rus_radioBut.TabStop = true;
+            this.Rus_radioBut.Text = "Rus";
+            this.Rus_radioBut.UseVisualStyleBackColor = true;
+            this.Rus_radioBut.CheckedChanged += new System.EventHandler(this.Rus_radioBut_CheckedChanged);
+            // 
+            // Eng_radioBut
+            // 
+            this.Eng_radioBut.AutoSize = true;
+            this.Eng_radioBut.Location = new System.Drawing.Point(931, 704);
+            this.Eng_radioBut.Name = "Eng_radioBut";
+            this.Eng_radioBut.Size = new System.Drawing.Size(44, 17);
+            this.Eng_radioBut.TabIndex = 86;
+            this.Eng_radioBut.TabStop = true;
+            this.Eng_radioBut.Text = "Eng";
+            this.Eng_radioBut.UseVisualStyleBackColor = true;
+            this.Eng_radioBut.CheckedChanged += new System.EventHandler(this.Eng_radioBut_CheckedChanged);
+            // 
+            // showText
+            // 
+            this.showText.FormattingEnabled = true;
+            this.showText.Location = new System.Drawing.Point(375, 645);
+            this.showText.Name = "showText";
+            this.showText.Size = new System.Drawing.Size(181, 69);
+            this.showText.TabIndex = 87;
+            this.showText.SelectedIndexChanged += new System.EventHandler(this.showText_SelectedIndexChanged);
+            // 
+            // showTextLb
+            // 
+            this.showTextLb.AutoSize = true;
+            this.showTextLb.Location = new System.Drawing.Point(981, 685);
+            this.showTextLb.Name = "showTextLb";
+            this.showTextLb.Size = new System.Drawing.Size(36, 13);
+            this.showTextLb.TabIndex = 88;
+            this.showTextLb.Text = "Empty";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(931, 660);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(71, 17);
+            this.checkBox1.TabIndex = 89;
+            this.checkBox1.Text = "InvColour";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // guide5Lr
+            // 
+            this.guide5Lr.AutoSize = true;
+            this.guide5Lr.Location = new System.Drawing.Point(776, 564);
+            this.guide5Lr.Name = "guide5Lr";
+            this.guide5Lr.Size = new System.Drawing.Size(225, 13);
+            this.guide5Lr.TabIndex = 90;
+            this.guide5Lr.Text = "We must get white text on black background. ";
+            // 
+            // dilateLb
+            // 
+            this.dilateLb.AutoSize = true;
+            this.dilateLb.Location = new System.Drawing.Point(736, 701);
+            this.dilateLb.Name = "dilateLb";
+            this.dilateLb.Size = new System.Drawing.Size(34, 13);
+            this.dilateLb.TabIndex = 91;
+            this.dilateLb.Text = "Dilate";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.dilateLb);
+            this.Controls.Add(this.guide5Lr);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.showTextLb);
+            this.Controls.Add(this.showText);
+            this.Controls.Add(this.Eng_radioBut);
+            this.Controls.Add(this.Rus_radioBut);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
@@ -913,6 +998,13 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.RadioButton Rus_radioBut;
+        private System.Windows.Forms.RadioButton Eng_radioBut;
+        private System.Windows.Forms.ListBox showText;
+        private System.Windows.Forms.Label showTextLb;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label guide5Lr;
+        private System.Windows.Forms.Label dilateLb;
     }
 }
 
