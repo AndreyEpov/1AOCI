@@ -100,6 +100,7 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.guide5Lr = new System.Windows.Forms.Label();
             this.dilateLb = new System.Windows.Forms.Label();
+            this.LoadMask = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -585,7 +586,8 @@
             this.LR_5.Items.AddRange(new object[] {
             "Highlighting parts of img",
             "Selecting and displaying an image section",
-            "Getting text"});
+            "Getting text",
+            "Mask"});
             this.LR_5.Location = new System.Drawing.Point(116, 528);
             this.LR_5.Name = "LR_5";
             this.LR_5.Size = new System.Drawing.Size(120, 186);
@@ -836,11 +838,22 @@
             this.dilateLb.TabIndex = 91;
             this.dilateLb.Text = "Dilate";
             // 
+            // LoadMask
+            // 
+            this.LoadMask.Location = new System.Drawing.Point(779, 645);
+            this.LoadMask.Name = "LoadMask";
+            this.LoadMask.Size = new System.Drawing.Size(126, 26);
+            this.LoadMask.TabIndex = 92;
+            this.LoadMask.Text = "Load mask";
+            this.LoadMask.UseVisualStyleBackColor = true;
+            this.LoadMask.Click += new System.EventHandler(this.LoadMask_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.LoadMask);
             this.Controls.Add(this.dilateLb);
             this.Controls.Add(this.guide5Lr);
             this.Controls.Add(this.checkBox1);
@@ -1005,6 +1018,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label guide5Lr;
         private System.Windows.Forms.Label dilateLb;
+        private System.Windows.Forms.Button LoadMask;
     }
 }
 

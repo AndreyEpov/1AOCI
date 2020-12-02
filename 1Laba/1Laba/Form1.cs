@@ -16,6 +16,7 @@ namespace _1Laba
 {
     public partial class Form1 : Form
     {
+        CascadeClassifier cascadeClassifier;
         private double Ten = 10;
         private Image<Bgr, byte> sourceImage;
         private Image<Bgr, byte> prevImage;
@@ -34,6 +35,9 @@ namespace _1Laba
         int k1=1,k2=1;
         int numberAngle = 0;
         List<Rectangle> rois = new List<Rectangle>();
+        VideoCapture capture1;
+        Mat mask;
+        Image<Gray, byte> gray;
 
         private int[,] mass = new int[3, 3]
             {
@@ -68,15 +72,32 @@ namespace _1Laba
         //----------------------------------------------------------------------------------------------------------------------------------Конец формы
         private void button1_Click(object sender, EventArgs e)
         {
-            choice = 0;
-            sourceImage = newImage.loadfunction(sourceImage);
-            if (sourceImage != null)
+           
+            if (choice == 31)
             {
-                imageBox1.Image = sourceImage.Resize(640, 480, Inter.Linear); 
-                imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear); 
-                timer2.Enabled = true;
+                cascadeClassifier = new CascadeClassifier("D:\\haarcascade_frontalface_default.xml");
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                openFileDialog1.Filter = "(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif;*.png";
+                var result = openFileDialog1.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    string fileName = openFileDialog1.FileName;
+                    mask = CvInvoke.Imread(fileName, ImreadModes.Unchanged);
+                    gray = mask.ToImage<Gray, byte>();
+                    imageBox1.Image = gray;
+                }
             }
-
+            if (choice == 0)
+            {
+                sourceImage = newImage.loadfunction(sourceImage);
+                if (sourceImage != null)
+                {
+                    imageBox1.Image = sourceImage.Resize(640, 480, Inter.Linear);
+                    imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear);
+                    
+                }
+            }
+            timer2.Enabled = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -86,6 +107,7 @@ namespace _1Laba
 
         private void button3_Click(object sender, EventArgs e)
         {
+
             choice = 3;
             timer2.Enabled = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -98,6 +120,13 @@ namespace _1Laba
                 timer1.Enabled = true;
 
             }
+
+        }
+        private void ProcessFrame(object sender, EventArgs e)
+        {
+            var frame1 = new Mat();
+            capture1.Retrieve(frame1);
+            Image<Bgr, byte> image = frame1.ToImage<Bgr, byte>();
 
         }
 
@@ -115,7 +144,38 @@ namespace _1Laba
                 imageBox2.Image = newImage.thresholdFilter(firstImage, cannyThreshold, cannyThresholdLinking, tb1, tb2, tb3, tb4).Resize(640, 480, Inter.Linear);
             if (choice == 3)
                 imageBox2.Image = firstImage;
+            if (choice == 31)
+            {
+                Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
+                using (cascadeClassifier)
+                {
+                    Rectangle[] facesDetected = cascadeClassifier.DetectMultiScale(grayImage, 1.1, 10,
+                    new Size(20, 20));
+                    var copy = firstImage.Copy();
+                    if (mask != null)
+                    {
+                        foreach (Rectangle rect in facesDetected)
+                        {
+                            Image<Bgra, byte> res = copy.Convert<Bgra, byte>();
+                            res.ROI = rect;
+                            Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
+                            Image<Gray, byte> graymask = small.Convert<Gray, byte>();
+                            CvInvoke.cvCopy(small, res, small.Split()[3]);
+                            res.ROI = System.Drawing.Rectangle.Empty;
+                            imageBox2.Image = res;
+                        }
 
+                    }
+                    else
+                    {
+                        foreach (Rectangle rect in facesDetected)
+                        {
+                            copy.Draw(rect, new Bgr(Color.Green), 2);
+                            imageBox2.Image = copy;
+                        }
+                    }
+                }
+            }
            frameCounter++;
             if (frameCounter >= capture.GetCaptureProperty(CapProp.FrameCount))
             {
@@ -228,6 +288,7 @@ namespace _1Laba
             showTextLb.Visible = false;
             guide5Lr.Visible = false;
             dilateLb.Visible = false;
+            LoadMask.Visible = false;
         }
         //---------------------------------------------------------------------------------HIDE
         private void Make_Gray_Click(object sender, EventArgs e)
@@ -382,6 +443,14 @@ namespace _1Laba
                         showText.Items.Add(text);
                     }
                                    
+                }
+                if(choice == 31)
+                {
+                   
+
+                   /* capture1 = new VideoCapture();
+                    capture1.ImageGrabbed += ProcessFrame;
+                    capture1.Start(); */
                 }
 
 
@@ -710,6 +779,11 @@ namespace _1Laba
                 dilateLb.Location = new Point(770, 700);
                 trackBar7.Location = new Point(570, 700);
             }
+            if(LR_5.SelectedIndex == 3)
+            {
+                tbHide();
+                choice = 31;
+            }
         }
 
         private void Rus_radioBut_CheckedChanged(object sender, EventArgs e)
@@ -731,6 +805,11 @@ namespace _1Laba
             sourceImage.ROI = Rectangle.Empty;
             imageBox2.Image = roiCopy;
             showTextLb.Text = Convert.ToString(showText.SelectedItem);
+        }
+
+        private void LoadMask_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)
@@ -1109,7 +1188,15 @@ namespace _1Laba
             {
                 Accept_but.Show();
             }
-
+            if (choice == 31) 
+            {
+                Accept_but.Show();
+                LoadMask.Visible = true;
+            }
+            else
+            {
+                Accept_but.Hide();
+            }
 
         }
 
