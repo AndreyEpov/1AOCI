@@ -810,7 +810,53 @@ namespace _1Laba
 
             return img;
         }
-      
+        public Image<Bgr, byte> editDiffusal(Image<Bgr, byte> sourceImage, Image<Gray, byte> background)
+        {
+            Image<Gray, byte> diff = background.AbsDiff(sourceImage.Convert<Gray, byte>());
+
+            diff.Erode(3);
+            diff.Dilate(4);
+
+            Image<Gray, byte> binarizedImage = diff.ThresholdBinary(new Gray(120), new Gray(255));
+
+            var copy = sourceImage.Copy();
+            var contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(binarizedImage, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (CvInvoke.ContourArea(contours[i], false) > 1000)
+                {
+                    Rectangle rect = CvInvoke.BoundingRectangle(contours[i]);
+                    copy.Draw(rect, new Bgr(Color.Red), 1);
+                }
+            }
+
+            return copy;
+        }
+        public Image<Bgr, byte> FilterMask(Image<Gray, byte> mask, Image<Bgr, byte> sourceImage)
+        {
+            var anchor = new Point(-1, -1);
+            var borderValue = new MCvScalar(1);
+            var kernel = CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(3, 3), anchor);
+            var closing = mask.MorphologyEx(MorphOp.Close, kernel, anchor, 1, BorderType.Default, borderValue);
+            var opening = closing.MorphologyEx(MorphOp.Open, kernel, anchor, 1, BorderType.Default, borderValue);
+            var dilation = opening.Dilate(7);
+            var threshold = dilation.ThresholdBinary(new Gray(250), new Gray(255));
+
+            var copy = sourceImage.Copy();
+            var contours = new VectorOfVectorOfPoint();
+            CvInvoke.FindContours(threshold, contours, null, RetrType.External, ChainApproxMethod.ChainApproxTc89L1);
+            for (int i = 0; i < contours.Size; i++)
+            {
+                if (CvInvoke.ContourArea(contours[i]) > 600)
+                {
+                    Rectangle boundingRect = CvInvoke.BoundingRectangle(contours[i]);
+                    copy.Draw(boundingRect, new Bgr(Color.Green), 2);
+                }
+            }
+
+            return copy;
+        }
 
     }
 }

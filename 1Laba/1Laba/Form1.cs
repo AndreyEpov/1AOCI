@@ -38,6 +38,9 @@ namespace _1Laba
         VideoCapture capture1;
         Mat mask;
         Image<Gray, byte> gray;
+        bool web = false;
+        Image<Gray, byte> background;
+        BackgroundSubtractorMOG2 subtractor = new BackgroundSubtractorMOG2(500, 16, true);
 
         private int[,] mass = new int[3, 3]
             {
@@ -125,44 +128,85 @@ namespace _1Laba
             }
             if(LR_5.SelectedIndex == 4)
                 pauseBut.Visible = true;
+            if(LR_6.SelectedIndex == 1)
+            {
+                frameCounter = 0;
+                subtractor.Clear();
+                if (result == DialogResult.OK)
+                {
+                    string fileName = openFileDialog.FileName;
+                    capture = new VideoCapture(fileName);
+                    timer1.Enabled = true;
+                    background = null;
+                }
+            }
 
         }
         private void ProcessFrame(object sender, EventArgs e)
         {            
-           
-            var frame1 = new Mat();
-            capture1.Retrieve(frame1);
-            Image<Bgr, byte> firstImage = frame1.ToImage<Bgr, byte>();
-
-            Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
-            using (CascadeClassifier cascadeClassifier = new CascadeClassifier("D:\\haarcascade_frontalface_default.xml"))
+           if(choice == 33 || choice == 34)
             {
-                Rectangle[] facesDetected = cascadeClassifier.DetectMultiScale(grayImage, 1.1, 10,
-                new Size(20, 20));
-                var copy = firstImage.Copy();
-                if (mask != null)
+                if (web == true)
                 {
-                    foreach (Rectangle rect in facesDetected)
+                    var frame = new Mat();
+                    capture.Retrieve(frame);
+                    Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
+                    if (background == null && choice == 33)
                     {
-                        Image<Bgra, byte> res = copy.Convert<Bgra, byte>();
-                        res.ROI = rect;
-                        Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
-                        Image<Gray, byte> graymask = small.Convert<Gray, byte>();
-                        CvInvoke.cvCopy(small, res, small.Split()[3]);
-                        res.ROI = Rectangle.Empty;
-                        imageBox2.Image = res;
+                        imageBox2.Image = image;
                     }
-
-                }
-                else
-                {
-                    foreach (Rectangle rect in facesDetected)
+                    else
+                    if (background != null && choice == 33)
                     {
-                        copy.Draw(rect, new Bgr(Color.Green), 2);
-                        imageBox2.Image = copy;
+                        imageBox2.Image = newImage.editDiffusal(image, background);
+                    }
+                    else
+                    if (choice == 34)
+                    {
+                        var foregroundMask = image.Convert<Gray, byte>().CopyBlank();
+                        subtractor.Apply(image.Convert<Gray, byte>(), foregroundMask);
+                        var filteredMask = newImage.FilterMask(foregroundMask, image);
+                        imageBox2.Image = filteredMask;
                     }
                 }
             }
+           if(choice == 32)
+            {
+                var frame1 = new Mat();
+                capture1.Retrieve(frame1);
+                Image<Bgr, byte> firstImage = frame1.ToImage<Bgr, byte>();
+
+                Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
+                using (CascadeClassifier cascadeClassifier = new CascadeClassifier("D:\\haarcascade_frontalface_default.xml"))
+                {
+                    Rectangle[] facesDetected = cascadeClassifier.DetectMultiScale(grayImage, 1.1, 10,
+                    new Size(20, 20));
+                    var copy = firstImage.Copy();
+                    if (mask != null)
+                    {
+                        foreach (Rectangle rect in facesDetected)
+                        {
+                            Image<Bgra, byte> res = copy.Convert<Bgra, byte>();
+                            res.ROI = rect;
+                            Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
+                            Image<Gray, byte> graymask = small.Convert<Gray, byte>();
+                            CvInvoke.cvCopy(small, res, small.Split()[3]);
+                            res.ROI = Rectangle.Empty;
+                            imageBox2.Image = res;
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (Rectangle rect in facesDetected)
+                        {
+                            copy.Draw(rect, new Bgr(Color.Green), 2);
+                            imageBox2.Image = copy;
+                        }
+                    }
+                }
+            }
+            
 
         }
 
@@ -232,6 +276,13 @@ namespace _1Laba
                     showText.Items.Add(text);
                 }
             }
+            if (choice == 34)
+            {
+                var foregroundMask = firstImage.Convert<Gray, byte>().CopyBlank();
+                subtractor.Apply(firstImage.Convert<Gray, byte>(), foregroundMask);
+                var filteredMask = newImage.FilterMask(foregroundMask, firstImage);
+                imageBox2.Image = filteredMask;
+            }
             frameCounter++;
             if (frameCounter >= capture.GetCaptureProperty(CapProp.FrameCount))
             {
@@ -288,7 +339,7 @@ namespace _1Laba
         {
             tb4 = trackBar4.Value;
         }
-        //---------------------------------------------------------------------------------HIDE
+        //-------------------------------------------------------------------------------------------------------------------------------------------HIDE
         private void tbHide()
         {
             tbForComma.Clear();
@@ -346,8 +397,9 @@ namespace _1Laba
             dilateLb.Visible = false;
             LoadMask.Visible = false;
             pauseBut.Visible = false;
+            BG_but.Visible = false;
         }
-        //---------------------------------------------------------------------------------HIDE
+        //--------------------------------------------------------------------------------------------------------------------------------------------HIDE
         private void Make_Gray_Click(object sender, EventArgs e)
         {
             choice = 5;
@@ -894,9 +946,21 @@ namespace _1Laba
         private void LoadMask_Click(object sender, EventArgs e)
         {
             timer2.Enabled = false;
-            capture1 = new VideoCapture();
-            capture1.ImageGrabbed += ProcessFrame;
-            capture1.Start();
+            if (LR_5.SelectedIndex == 4 || LR_5.SelectedIndex == 3)
+            {
+                capture1 = new VideoCapture();
+                capture1.ImageGrabbed += ProcessFrame;
+                capture1.Start();
+            }
+            if (LR_6.SelectedIndex == 0)
+            {
+                subtractor.Clear();
+                web = true;
+                capture = new VideoCapture();
+                capture.ImageGrabbed += ProcessFrame;
+                capture.Start();
+            }
+            
         }
 
         private void pauseBut_Click(object sender, EventArgs e)
@@ -916,7 +980,39 @@ namespace _1Laba
                 timer1.Enabled = false;
                 pauseBut.Text = "Play";
             }
+            if(choice == 33)
+            {
+                web = false;
+                capture.ImageGrabbed -= ProcessFrame;
+                capture.Stop();
+            }
 
+        }
+
+        private void BG_but_Click(object sender, EventArgs e)
+        {
+            var frame = capture.QueryFrame();
+            background = frame.ToImage<Gray, byte>();
+        }
+
+        private void LR_6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (LR_5.SelectedIndex != -1)
+                LR_5.SetSelected(LR_5.SelectedIndex, false);
+            if (LR_4.SelectedIndex != -1)
+                LR_4.SetSelected(LR_4.SelectedIndex, false);
+            tbHide();
+            BG_but.Visible = true;
+            LoadMask.Visible = true;
+            pauseBut.Visible = true;
+            if(LR_6.SelectedIndex == 0)
+            {
+                choice = 33;
+            }
+            if (LR_6.SelectedIndex == 1)
+            {
+                choice = 34;
+            }
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)

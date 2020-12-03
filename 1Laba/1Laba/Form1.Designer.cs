@@ -102,6 +102,7 @@
             this.dilateLb = new System.Windows.Forms.Label();
             this.LoadMask = new System.Windows.Forms.Button();
             this.pauseBut = new System.Windows.Forms.Button();
+            this.BG_but = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -600,13 +601,13 @@
             // 
             this.LR_6.FormattingEnabled = true;
             this.LR_6.Items.AddRange(new object[] {
-            "Canny",
-            "Cell_Shading",
-            "Video"});
+            "Web(Find_object)",
+            "Video(Find_object)"});
             this.LR_6.Location = new System.Drawing.Point(256, 528);
             this.LR_6.Name = "LR_6";
             this.LR_6.Size = new System.Drawing.Size(86, 186);
             this.LR_6.TabIndex = 67;
+            this.LR_6.SelectedIndexChanged += new System.EventHandler(this.LR_6_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -860,11 +861,22 @@
             this.pauseBut.UseVisualStyleBackColor = true;
             this.pauseBut.Click += new System.EventHandler(this.pauseBut_Click);
             // 
+            // BG_but
+            // 
+            this.BG_but.Location = new System.Drawing.Point(656, 307);
+            this.BG_but.Name = "BG_but";
+            this.BG_but.Size = new System.Drawing.Size(52, 42);
+            this.BG_but.TabIndex = 94;
+            this.BG_but.Text = "BG";
+            this.BG_but.UseVisualStyleBackColor = true;
+            this.BG_but.Click += new System.EventHandler(this.BG_but_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.BG_but);
             this.Controls.Add(this.pauseBut);
             this.Controls.Add(this.LoadMask);
             this.Controls.Add(this.dilateLb);
@@ -1033,6 +1045,7 @@
         private System.Windows.Forms.Label dilateLb;
         private System.Windows.Forms.Button LoadMask;
         private System.Windows.Forms.Button pauseBut;
+        private System.Windows.Forms.Button BG_but;
     }
 }
 
