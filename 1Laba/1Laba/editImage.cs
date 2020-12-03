@@ -810,6 +810,7 @@ namespace _1Laba
 
             return img;
         }
+      
 
     }
 }

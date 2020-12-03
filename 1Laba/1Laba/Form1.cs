@@ -83,20 +83,23 @@ namespace _1Laba
                 {
                     string fileName = openFileDialog1.FileName;
                     mask = CvInvoke.Imread(fileName, ImreadModes.Unchanged);
+                    imageBox2.Image = mask;
                     gray = mask.ToImage<Gray, byte>();
-                    imageBox2.Image = gray;
+                    
                 }
             }
-            if (choice == 0)
+            else
             {
                 sourceImage = newImage.loadfunction(sourceImage);
                 if (sourceImage != null)
                 {
                     imageBox1.Image = sourceImage.Resize(640, 480, Inter.Linear);
                     imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear);
-                    
+
                 }
             }
+
+            
             timer2.Enabled = true;
         }
 
@@ -120,6 +123,8 @@ namespace _1Laba
                 timer1.Enabled = true;
 
             }
+            if(LR_5.SelectedIndex == 4)
+                pauseBut.Visible = true;
 
         }
         private void ProcessFrame(object sender, EventArgs e)
@@ -144,7 +149,7 @@ namespace _1Laba
                         Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
                         Image<Gray, byte> graymask = small.Convert<Gray, byte>();
                         CvInvoke.cvCopy(small, res, small.Split()[3]);
-                        res.ROI = System.Drawing.Rectangle.Empty;
+                        res.ROI = Rectangle.Empty;
                         imageBox2.Image = res;
                     }
 
@@ -206,6 +211,26 @@ namespace _1Laba
                          }
                      }
                  }
+            }
+            if (choice == 32)
+            {
+                rois.Clear();
+                showText.Items.Clear();
+                imageBox2.Image = newImage.editRoiFinder(firstImage, trackBar1.Value, checkBox1.Checked, trackBar7.Value, rois);
+                for (int i = 0; i < rois.Count; i++)
+                {
+                    firstImage.ROI = rois[i];
+                    var roiCopy = firstImage.Copy();
+                    firstImage.ROI = Rectangle.Empty;
+                    if (ocr == null)
+                    {
+                        Eng_radioBut.Checked = true;
+                    }
+                    ocr.SetImage(roiCopy);
+                    ocr.Recognize();
+                    string text = ocr.GetUTF8Text();
+                    showText.Items.Add(text);
+                }
             }
             frameCounter++;
             if (frameCounter >= capture.GetCaptureProperty(CapProp.FrameCount))
@@ -320,6 +345,7 @@ namespace _1Laba
             guide5Lr.Visible = false;
             dilateLb.Visible = false;
             LoadMask.Visible = false;
+            pauseBut.Visible = false;
         }
         //---------------------------------------------------------------------------------HIDE
         private void Make_Gray_Click(object sender, EventArgs e)
@@ -475,13 +501,26 @@ namespace _1Laba
                     }
                                    
                 }
-                if(choice == 31)
+                if(choice == 32)
                 {
-                   
-
-                   /* capture1 = new VideoCapture();
-                    capture1.ImageGrabbed += ProcessFrame;
-                    capture1.Start(); */
+                    rois.Clear();
+                    showText.Items.Clear();
+                    imageBox2.Image = newImage.editRoiFinder(sourceImage, trackBar1.Value, checkBox1.Checked, trackBar7.Value, rois);
+                    for (int i = 0; i < rois.Count; i++)
+                    {
+                        sourceImage.ROI = rois[i];
+                        var roiCopy = sourceImage.Copy();
+                        sourceImage.ROI = Rectangle.Empty;
+                        if (ocr == null)
+                        {
+                            MessageBox.Show("Choice language");
+                            Rus_radioBut.Checked = true;
+                        }
+                        ocr.SetImage(roiCopy);
+                        ocr.Recognize();
+                        string text = ocr.GetUTF8Text();
+                        showText.Items.Add(text);
+                    }
                 }
 
 
@@ -815,6 +854,20 @@ namespace _1Laba
                 tbHide();
                 choice = 31;
             }
+            if (LR_5.SelectedIndex == 4)
+            {
+                choice = 32;
+
+                //Accept_but.Show();
+
+                trackBar7.Visible = true;
+                Rus_radioBut.Visible = true;
+                Eng_radioBut.Visible = true;
+                showText.Visible = true;
+                dilateLb.Visible = true;
+                dilateLb.Location = new Point(770, 700);
+                trackBar7.Location = new Point(570, 700);
+            }
         }
 
         private void Rus_radioBut_CheckedChanged(object sender, EventArgs e)
@@ -844,6 +897,26 @@ namespace _1Laba
             capture1 = new VideoCapture();
             capture1.ImageGrabbed += ProcessFrame;
             capture1.Start();
+        }
+
+        private void pauseBut_Click(object sender, EventArgs e)
+        {
+            if(choice == 31)
+            {
+                capture1.ImageGrabbed -= ProcessFrame;
+                capture1.Stop();
+            }
+            if (pauseBut.Text == "Play" && choice == 32)
+            {
+                timer1.Enabled = true;
+                pauseBut.Text = "Pause";
+            }
+            else if (choice == 32 && pauseBut.Text == "Pause")
+            {
+                timer1.Enabled = false;
+                pauseBut.Text = "Play";
+            }
+
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)

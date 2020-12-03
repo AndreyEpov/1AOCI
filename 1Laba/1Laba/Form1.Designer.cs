@@ -101,6 +101,7 @@
             this.guide5Lr = new System.Windows.Forms.Label();
             this.dilateLb = new System.Windows.Forms.Label();
             this.LoadMask = new System.Windows.Forms.Button();
+            this.pauseBut = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -587,7 +588,8 @@
             "Highlighting parts of img",
             "Selecting and displaying an image section",
             "Getting text",
-            "Mask"});
+            "Mask",
+            "Video is being read text"});
             this.LR_5.Location = new System.Drawing.Point(116, 528);
             this.LR_5.Name = "LR_5";
             this.LR_5.Size = new System.Drawing.Size(120, 186);
@@ -840,19 +842,30 @@
             // 
             // LoadMask
             // 
-            this.LoadMask.Location = new System.Drawing.Point(779, 645);
+            this.LoadMask.Location = new System.Drawing.Point(656, 211);
             this.LoadMask.Name = "LoadMask";
-            this.LoadMask.Size = new System.Drawing.Size(126, 26);
+            this.LoadMask.Size = new System.Drawing.Size(52, 42);
             this.LoadMask.TabIndex = 92;
             this.LoadMask.Text = "web";
             this.LoadMask.UseVisualStyleBackColor = true;
             this.LoadMask.Click += new System.EventHandler(this.LoadMask_Click);
+            // 
+            // pauseBut
+            // 
+            this.pauseBut.Location = new System.Drawing.Point(656, 259);
+            this.pauseBut.Name = "pauseBut";
+            this.pauseBut.Size = new System.Drawing.Size(52, 42);
+            this.pauseBut.TabIndex = 93;
+            this.pauseBut.Text = "Pause";
+            this.pauseBut.UseVisualStyleBackColor = true;
+            this.pauseBut.Click += new System.EventHandler(this.pauseBut_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.pauseBut);
             this.Controls.Add(this.LoadMask);
             this.Controls.Add(this.dilateLb);
             this.Controls.Add(this.guide5Lr);
@@ -1019,6 +1032,7 @@
         private System.Windows.Forms.Label guide5Lr;
         private System.Windows.Forms.Label dilateLb;
         private System.Windows.Forms.Button LoadMask;
+        private System.Windows.Forms.Button pauseBut;
     }
 }
 
