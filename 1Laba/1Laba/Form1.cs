@@ -16,7 +16,7 @@ namespace _1Laba
 {
     public partial class Form1 : Form
     {
-        CascadeClassifier cascadeClassifier;
+        //CascadeClassifier cascadeClassifier;
         private double Ten = 10;
         private Image<Bgr, byte> sourceImage;
         private Image<Bgr, byte> prevImage;
@@ -75,7 +75,7 @@ namespace _1Laba
            
             if (choice == 31)
             {
-                cascadeClassifier = new CascadeClassifier("D:\\haarcascade_frontalface_default.xml");
+                
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
                 openFileDialog1.Filter = "(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif;*.png";
                 var result = openFileDialog1.ShowDialog();
@@ -84,7 +84,7 @@ namespace _1Laba
                     string fileName = openFileDialog1.FileName;
                     mask = CvInvoke.Imread(fileName, ImreadModes.Unchanged);
                     gray = mask.ToImage<Gray, byte>();
-                    imageBox1.Image = gray;
+                    imageBox2.Image = gray;
                 }
             }
             if (choice == 0)
@@ -107,8 +107,8 @@ namespace _1Laba
 
         private void button3_Click(object sender, EventArgs e)
         {
-
-            choice = 3;
+           
+            //choice = 3;
             timer2.Enabled = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "video Files(*.MP4)| *.MP4;";
@@ -123,10 +123,41 @@ namespace _1Laba
 
         }
         private void ProcessFrame(object sender, EventArgs e)
-        {
+        {            
+           
             var frame1 = new Mat();
             capture1.Retrieve(frame1);
-            Image<Bgr, byte> image = frame1.ToImage<Bgr, byte>();
+            Image<Bgr, byte> firstImage = frame1.ToImage<Bgr, byte>();
+
+            Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
+            using (CascadeClassifier cascadeClassifier = new CascadeClassifier("D:\\haarcascade_frontalface_default.xml"))
+            {
+                Rectangle[] facesDetected = cascadeClassifier.DetectMultiScale(grayImage, 1.1, 10,
+                new Size(20, 20));
+                var copy = firstImage.Copy();
+                if (mask != null)
+                {
+                    foreach (Rectangle rect in facesDetected)
+                    {
+                        Image<Bgra, byte> res = copy.Convert<Bgra, byte>();
+                        res.ROI = rect;
+                        Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
+                        Image<Gray, byte> graymask = small.Convert<Gray, byte>();
+                        CvInvoke.cvCopy(small, res, small.Split()[3]);
+                        res.ROI = System.Drawing.Rectangle.Empty;
+                        imageBox2.Image = res;
+                    }
+
+                }
+                else
+                {
+                    foreach (Rectangle rect in facesDetected)
+                    {
+                        copy.Draw(rect, new Bgr(Color.Green), 2);
+                        imageBox2.Image = copy;
+                    }
+                }
+            }
 
         }
 
@@ -134,7 +165,7 @@ namespace _1Laba
         {
             var frame = capture.QueryFrame();
             Image<Bgr, byte> firstImage = frame.ToImage<Bgr, byte>();
-            imageBox2.Image = firstImage;
+            //imageBox2.Image = firstImage;
 
             if (choice == 0)
                 imageBox2.Image = sourceImage.Resize(640, 480, Inter.Linear);
@@ -147,36 +178,36 @@ namespace _1Laba
             if (choice == 31)
             {
                 Image<Gray, byte> grayImage = firstImage.Convert<Gray, byte>();
-                using (cascadeClassifier)
-                {
-                    Rectangle[] facesDetected = cascadeClassifier.DetectMultiScale(grayImage, 1.1, 10,
-                    new Size(20, 20));
-                    var copy = firstImage.Copy();
-                    if (mask != null)
-                    {
-                        foreach (Rectangle rect in facesDetected)
-                        {
-                            Image<Bgra, byte> res = copy.Convert<Bgra, byte>();
-                            res.ROI = rect;
-                            Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
-                            Image<Gray, byte> graymask = small.Convert<Gray, byte>();
-                            CvInvoke.cvCopy(small, res, small.Split()[3]);
-                            res.ROI = System.Drawing.Rectangle.Empty;
-                            imageBox2.Image = res;
-                        }
+                 using (CascadeClassifier cascadeClassifier = new CascadeClassifier("D:\\haarcascade_frontalface_default.xml"))
+                 {
+                     Rectangle[] facesDetected = cascadeClassifier.DetectMultiScale(grayImage, 1.1, 10,
+                     new Size(20, 20));
+                     var copy = firstImage.Copy();
+                     if (mask != null)
+                     {
+                         foreach (Rectangle rect in facesDetected)
+                         {
+                             Image<Bgra, byte> res = copy.Convert<Bgra, byte>();
+                             res.ROI = rect;
+                             Image<Bgra, byte> small = mask.ToImage<Bgra, byte>().Resize(rect.Width, rect.Height, Inter.Nearest);
+                             Image<Gray, byte> graymask = small.Convert<Gray, byte>();
+                             CvInvoke.cvCopy(small, res, small.Split()[3]);
+                             res.ROI = Rectangle.Empty;
+                             imageBox2.Image = res;
+                         }
 
-                    }
-                    else
-                    {
-                        foreach (Rectangle rect in facesDetected)
-                        {
-                            copy.Draw(rect, new Bgr(Color.Green), 2);
-                            imageBox2.Image = copy;
-                        }
-                    }
-                }
+                     }
+                     else
+                     {
+                         foreach (Rectangle rect in facesDetected)
+                         {
+                             copy.Draw(rect, new Bgr(Color.Green), 2);
+                             imageBox2.Image = copy;
+                         }
+                     }
+                 }
             }
-           frameCounter++;
+            frameCounter++;
             if (frameCounter >= capture.GetCaptureProperty(CapProp.FrameCount))
             {
                 timer1.Enabled = false;
@@ -809,7 +840,10 @@ namespace _1Laba
 
         private void LoadMask_Click(object sender, EventArgs e)
         {
-
+            timer2.Enabled = false;
+            capture1 = new VideoCapture();
+            capture1.ImageGrabbed += ProcessFrame;
+            capture1.Start();
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)
@@ -1190,12 +1224,7 @@ namespace _1Laba
             }
             if (choice == 31) 
             {
-                Accept_but.Show();
                 LoadMask.Visible = true;
-            }
-            else
-            {
-                Accept_but.Hide();
             }
 
         }

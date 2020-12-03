@@ -844,7 +844,7 @@
             this.LoadMask.Name = "LoadMask";
             this.LoadMask.Size = new System.Drawing.Size(126, 26);
             this.LoadMask.TabIndex = 92;
-            this.LoadMask.Text = "Load mask";
+            this.LoadMask.Text = "web";
             this.LoadMask.UseVisualStyleBackColor = true;
             this.LoadMask.Click += new System.EventHandler(this.LoadMask_Click);
             // 
