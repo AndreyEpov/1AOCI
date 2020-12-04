@@ -154,23 +154,29 @@ namespace _1Laba
                     if (background == null && choice == 33)
                     {
                         imageBox2.Image = image;
+                       // imageBox2.Image = newImage.editNegative(image, background); 
                     }
                     else
                     if (background != null && choice == 33)
                     {
-                        imageBox2.Image = newImage.editDiffusal(image, background);
+                        // imageBox2.Image = newImage.editDiffusal(image, background);
+                        var foregroundMask = image.Convert<Gray, byte>().CopyBlank();
+                        subtractor.Apply(image.Convert<Gray, byte>(), foregroundMask);
+                        // var filteredMask = newImage.editNegative(image, foregroundMask);
+                        var filteredMask = newImage.editDiffusal(image, background);
+                        imageBox2.Image = filteredMask;
                     }
                     else
                     if (choice == 34)
                     {
                         var foregroundMask = image.Convert<Gray, byte>().CopyBlank();
                         subtractor.Apply(image.Convert<Gray, byte>(), foregroundMask);
-                        var filteredMask = newImage.FilterMask(foregroundMask, image);
+                        var filteredMask = newImage.editFilterMask(foregroundMask, image);
                         imageBox2.Image = filteredMask;
                     }
                 }
             }
-           if(choice == 32)
+           if(choice == 31)
             {
                 var frame1 = new Mat();
                 capture1.Retrieve(frame1);
@@ -280,7 +286,7 @@ namespace _1Laba
             {
                 var foregroundMask = firstImage.Convert<Gray, byte>().CopyBlank();
                 subtractor.Apply(firstImage.Convert<Gray, byte>(), foregroundMask);
-                var filteredMask = newImage.FilterMask(foregroundMask, firstImage);
+                var filteredMask = newImage.editFilterMask(foregroundMask, firstImage);
                 imageBox2.Image = filteredMask;
             }
             frameCounter++;
@@ -905,13 +911,14 @@ namespace _1Laba
             {
                 tbHide();
                 choice = 31;
+                pauseBut.Visible = true;
             }
             if (LR_5.SelectedIndex == 4)
             {
                 choice = 32;
 
                 //Accept_but.Show();
-
+                pauseBut.Visible = true;
                 trackBar7.Visible = true;
                 Rus_radioBut.Visible = true;
                 Eng_radioBut.Visible = true;
@@ -945,6 +952,7 @@ namespace _1Laba
 
         private void LoadMask_Click(object sender, EventArgs e)
         {
+            web = true;
             timer2.Enabled = false;
             if (LR_5.SelectedIndex == 4 || LR_5.SelectedIndex == 3)
             {
@@ -954,8 +962,7 @@ namespace _1Laba
             }
             if (LR_6.SelectedIndex == 0)
             {
-                subtractor.Clear();
-                web = true;
+                subtractor.Clear();               
                 capture = new VideoCapture();
                 capture.ImageGrabbed += ProcessFrame;
                 capture.Start();

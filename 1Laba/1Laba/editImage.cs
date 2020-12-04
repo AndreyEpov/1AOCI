@@ -147,8 +147,8 @@ namespace _1Laba
                         if ((destImage.Data[y, x, channel] + value1) > 255)
                             destImage.Data[y, x, channel] = 255;
                         else if ((destImage.Data[y, x, channel] + value1) <= 0)
-                            destImage.Data[y, x, channel] = 10;                        
-                        else 
+                            destImage.Data[y, x, channel] = 10;
+                        else
                             destImage.Data[y, x, channel] = (byte)(sourceImage.Data[y, x, channel] + value1);
                     }
 
@@ -303,7 +303,7 @@ namespace _1Laba
                         {
                             for (int j = -1; j < 2; j++)
                             {
-                                blurl.Add(sourceImage.Data[ y + j, x + i, channel]);
+                                blurl.Add(sourceImage.Data[y + j, x + i, channel]);
                             }
                         }
                         blurl.Sort();
@@ -315,7 +315,7 @@ namespace _1Laba
         }
         public Image<Bgr, byte> editMass(Image<Bgr, byte> sourceImage, int[,] mat)
         {
-            
+
             var destImage = sourceImage.CopyBlank();
             int sh = 1;
             for (int channel = 0; channel < destImage.NumberOfChannels; channel++)
@@ -332,7 +332,7 @@ namespace _1Laba
                                 result += sourceImage.Data[j + y, i + x, channel] * mat[i + 1, j + 1];
                             }
                         }
-                       
+
                         if (result > 255) result = 255; else if (result < 0) result = 0;
                         destImage.Data[y, x, channel] = Convert.ToByte(result);
                     }
@@ -340,10 +340,10 @@ namespace _1Laba
             }
             return destImage;
         }
-        public Image<Bgr, byte> editEdge(Image<Gray, byte> sourceImage,double value1, double value2)
+        public Image<Bgr, byte> editEdge(Image<Gray, byte> sourceImage, double value1, double value2)
         {
             var edges = sourceImage;
-            edges = edges.ThresholdAdaptive(new Gray(value1), AdaptiveThresholdType.MeanC, ThresholdType.Binary, 3, new Gray(value2/10));
+            edges = edges.ThresholdAdaptive(new Gray(value1), AdaptiveThresholdType.MeanC, ThresholdType.Binary, 3, new Gray(value2 / 10));
             Image<Bgr, byte> edgesBgr = edges.Convert<Bgr, byte>();
             return edgesBgr;
         }
@@ -373,7 +373,7 @@ namespace _1Laba
             }
             return destImage;
         }
-        public Image<Hsv, byte> editHSV(Image<Bgr, byte> sourceImage,int value, double value1)
+        public Image<Hsv, byte> editHSV(Image<Bgr, byte> sourceImage, int value, double value1)
         {
             Image<Hsv, byte> imageHsv = sourceImage.Convert<Hsv, byte>();
             for (int y = 0; y < imageHsv.Size.Height; y++)
@@ -386,29 +386,29 @@ namespace _1Laba
             }
             return imageHsv;
         }
-        public Image<Bgr, byte> editScale(Image<Bgr, byte> sourceImage,double k)
+        public Image<Bgr, byte> editScale(Image<Bgr, byte> sourceImage, double k)
         {
-            Image<Bgr, byte> scaleImg = new Image<Bgr, byte>((int)(sourceImage.Width*k), (int)(sourceImage.Height * k));
-            for (int i = 0; i < scaleImg.Width;i++)
+            Image<Bgr, byte> scaleImg = new Image<Bgr, byte>((int)(sourceImage.Width * k), (int)(sourceImage.Height * k));
+            for (int i = 0; i < scaleImg.Width; i++)
                 for (int j = 0; j < scaleImg.Height; j++)
                 {
                     int oldI = (int)(i / k);
                     int oldJ = (int)(j / k);
-                    scaleImg[j, i] = sourceImage[oldJ, oldI]; 
+                    scaleImg[j, i] = sourceImage[oldJ, oldI];
                 }
-            
+
             return scaleImg;
         }
 
         public Image<Bgr, byte> editBiScale(Image<Bgr, byte> sourceImage, double k)
         {
             Image<Bgr, byte> scaleImg = new Image<Bgr, byte>((int)(sourceImage.Width * k), (int)(sourceImage.Height * k));
-            for (int i = 0; i < scaleImg.Width-1; i++)
-                for (int j = 0; j < scaleImg.Height-1; j++)
+            for (int i = 0; i < scaleImg.Width - 1; i++)
+                for (int j = 0; j < scaleImg.Height - 1; j++)
                 {
                     double I = (i / k);
                     double J = (j / k);
-                    
+
 
                     double baseI = Math.Floor(I);
                     double baseJ = Math.Floor(J);
@@ -427,7 +427,7 @@ namespace _1Laba
                     c1.Red = sourceImage.Data[(int)baseJ, (int)baseI, 2] * irI + sourceImage.Data[(int)baseJ, (int)baseI + 1, 2] * rI;
 
                     Bgr c2 = new Bgr();
-                    c2.Blue = sourceImage.Data[(int)(baseJ+1), (int)baseI, 0] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 0] * rI;
+                    c2.Blue = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 0] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 0] * rI;
                     c2.Green = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 1] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 1] * rI;
                     c2.Red = sourceImage.Data[(int)(baseJ + 1), (int)baseI, 2] * irI + sourceImage.Data[(int)(baseJ + 1), (int)baseI + 1, 2] * rI;
 
@@ -441,11 +441,11 @@ namespace _1Laba
 
             return scaleImg;
         }
-        public Image<Bgr,byte> editShift(Image<Bgr, byte> sourceImage, double x, double y, double cx, double cy)
+        public Image<Bgr, byte> editShift(Image<Bgr, byte> sourceImage, double x, double y, double cx, double cy)
         {
 
-            double sx = x+cx;
-            double sy = y+cy;
+            double sx = x + cx;
+            double sy = y + cy;
             Image<Bgr, byte> shiftedImg = new Image<Bgr, byte>((int)(sourceImage.Width), (int)(sourceImage.Height));
             if (sy == 0)
             {
@@ -527,7 +527,7 @@ namespace _1Laba
             }
             return shiftedImg;
         }
-        public Image<Bgr, byte> editRotate(Image<Bgr, byte> sourceImage,Point p, double  ang)
+        public Image<Bgr, byte> editRotate(Image<Bgr, byte> sourceImage, Point p, double ang)
         {
             Image<Bgr, byte> rotateimage = sourceImage.CopyBlank();
 
@@ -552,8 +552,8 @@ namespace _1Laba
                         double rI = I - baseI;
                         double rJ = J - baseJ;
 
-                        double irI =  1- rI ;
-                        double irJ = 1 - rJ ;
+                        double irI = 1 - rI;
+                        double irJ = 1 - rJ;
 
                         Bgr c1 = new Bgr();
                         c1.Blue = sourceImage.Data[(int)baseJ, (int)baseI, 0] * irI + sourceImage.Data[(int)baseJ, (int)(baseI + 1), 0] * rI;
@@ -591,7 +591,7 @@ namespace _1Laba
             var homographyMatrix = CvInvoke.GetPerspectiveTransform(srcPoints, destPoints);
             var imgCopy = new Image<Bgr, byte>(sourceImage.Size);
             CvInvoke.WarpPerspective(sourceImage, imgCopy, homographyMatrix, imgCopy.Size);
-            return imgCopy;           
+            return imgCopy;
         }
         public Image<Bgr, byte> editFlip(Image<Bgr, byte> sourceImage, int k1, int k2)
         {
@@ -628,9 +628,9 @@ namespace _1Laba
             return binarizedImage;
         }
 
-        public Image<Bgr, byte> edit_contours(Image<Bgr, byte> sourceImage, double k2,int thicc)
+        public Image<Bgr, byte> edit_contours(Image<Bgr, byte> sourceImage, double k2, int thicc)
         {
-            Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage,k2);
+            Image<Gray, byte> binarizedImage = edit_Noise_and_Brightness(sourceImage, k2);
             var contours = new VectorOfVectorOfPoint();
             CvInvoke.FindContours(
                 binarizedImage,
@@ -736,7 +736,7 @@ namespace _1Laba
             }
             return true;
         }
-        public Image<Bgr, byte> findCirkle(Image<Bgr, byte> sourceImage,int minDist,int tresh,int minRad,int maxRad)
+        public Image<Bgr, byte> findCirkle(Image<Bgr, byte> sourceImage, int minDist, int tresh, int minRad, int maxRad)
         {
             number = 0;
             var grayImage = sourceImage.Convert<Gray, byte>();
@@ -833,7 +833,7 @@ namespace _1Laba
 
             return copy;
         }
-        public Image<Bgr, byte> FilterMask(Image<Gray, byte> mask, Image<Bgr, byte> sourceImage)
+        public Image<Bgr, byte> editFilterMask(Image<Gray, byte> mask, Image<Bgr, byte> sourceImage)
         {
             var anchor = new Point(-1, -1);
             var borderValue = new MCvScalar(1);
@@ -857,6 +857,17 @@ namespace _1Laba
 
             return copy;
         }
+        public Image<Gray, byte> editNegative(Image<Bgr, byte> sourceImage, Image<Gray, byte> background)
+        {
+            Image<Gray, byte> diff = background.AbsDiff(sourceImage.Convert<Gray, byte>());
+            diff.Erode(4);
+            diff.Dilate(6);
+            Image<Gray, byte> binarizedImage = diff.ThresholdBinary(new Gray(120), new Gray(255));
+         
 
+
+
+            return binarizedImage;
+        }
     }
 }
