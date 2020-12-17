@@ -17,6 +17,8 @@ namespace _1Laba
     public partial class Form1 : Form
     {
         //CascadeClassifier cascadeClassifier;
+        bool visiblePoint = false;
+        public int lab7Mode = 0;
         private double Ten = 10;
         private Image<Bgr, byte> sourceImage;
         private Image<Bgr, byte> prevImage;
@@ -41,6 +43,7 @@ namespace _1Laba
         bool web = false;
         Image<Gray, byte> background;
         BackgroundSubtractorMOG2 subtractor = new BackgroundSubtractorMOG2(500, 16, true);
+        MKeyPoint[] mkpoints;
 
         private int[,] mass = new int[3, 3]
             {
@@ -62,6 +65,7 @@ namespace _1Laba
 };
         int[,] mass3 = new int[3, 3];
         private Tesseract ocr;
+        private Image<Bgr, byte> sourceImage1;
 
         //----------------------------------------------------------------------------------------------------------------------------------Начало формы
         public Form1()
@@ -404,6 +408,10 @@ namespace _1Laba
             LoadMask.Visible = false;
             pauseBut.Visible = false;
             BG_but.Visible = false;
+            GFTT.Visible = false;
+            Brisk.Visible = false;
+            Fast.Visible = false;
+            VisiblePoint.Visible = false;
         }
         //--------------------------------------------------------------------------------------------------------------------------------------------HIDE
         private void Make_Gray_Click(object sender, EventArgs e)
@@ -508,7 +516,8 @@ namespace _1Laba
 
         private void Accept_but_Click(object sender, EventArgs e)
         {
-            sourceImage = sourceImage.Resize(640, 480, Inter.Linear);
+            if(sourceImage!= null)
+                 sourceImage = sourceImage.Resize(640, 480, Inter.Linear);
             try
             {
                 if (choice == 18)
@@ -580,7 +589,26 @@ namespace _1Laba
                         showText.Items.Add(text);
                     }
                 }
+                if(choice == 50)
+                {
+                    mkpoints = newImage.Maspointer(sourceImage, lab7Mode);
+                    imageBox1.Image = newImage.Drawer(sourceImage, mkpoints);
+                    imageBox2.Image = newImage.PDrawer(newImage.FPoints(mkpoints, sourceImage, sourceImage1), sourceImage1);
+                    imageBox2.Image = newImage.Homographica(sourceImage, sourceImage1, lab7Mode);
+                    imageBox1.Size = new Size(640, 480);
+                    imageBox2.Visible = true;
 
+                }
+                if (choice == 51)
+                {
+
+                    mkpoints = newImage.Maspointer(sourceImage, lab7Mode);
+                    imageBox1.Image = newImage.Drawer(sourceImage, mkpoints);
+                    imageBox2.Image = newImage.PDrawer(newImage.FPoints(mkpoints, sourceImage, sourceImage1), sourceImage1);
+                    imageBox2.Image = newImage.PointHomo(sourceImage, sourceImage1);
+                    imageBox1.Size = new Size(640, 480);
+                    imageBox2.Visible = true;
+                }
 
             }
             catch
@@ -872,7 +900,7 @@ namespace _1Laba
         private void LR_5_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (LR_4.SelectedIndex != -1)
-                LR_4.SetSelected(LR_5.SelectedIndex, false);
+                LR_4.SetSelected(LR_4.SelectedIndex, false);
             if (LR_6.SelectedIndex != -1)
                 LR_6.SetSelected(LR_6.SelectedIndex, false);
             tbHide();
@@ -1020,6 +1048,68 @@ namespace _1Laba
             {
                 choice = 34;
             }
+        }
+
+        private void LR_7_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbHide();
+            GFTT.Visible = true;
+            Brisk.Visible = true;
+            Fast.Visible = true;
+            VisiblePoint.Visible = true;
+            if (LR_7.SelectedIndex == 0)
+            {
+                choice = 50;
+                if (sourceImage == null)
+                    sourceImage = newImage.loadfunction(sourceImage);
+                imageBox1.Image = sourceImage;
+                if (sourceImage1 == null)
+                    sourceImage1 = newImage.loadfunction(sourceImage1);
+                imageBox2.Image = sourceImage1;
+                Accept_but.Show();
+
+            }
+
+            if (LR_7.SelectedIndex == 1)
+            {
+                choice = 51;
+                if (sourceImage == null)
+                    sourceImage = newImage.loadfunction(sourceImage);
+                imageBox1.Image = sourceImage;
+                if (sourceImage1 == null)
+                    sourceImage1 = newImage.loadfunction(sourceImage1);
+                imageBox2.Image = sourceImage1;
+                Accept_but.Show();
+            }
+
+
+        }
+
+        private void GFTT_Click(object sender, EventArgs e)
+        {
+            lab7Mode = 0;
+            visiblePoint = false;
+        }
+
+        private void Brisk_Click(object sender, EventArgs e)
+        {
+            lab7Mode = 1;
+            visiblePoint = false;
+        }
+
+        private void Fast_Click(object sender, EventArgs e)
+        {
+            lab7Mode = 2;
+            visiblePoint = false;
+        }
+
+        private void VisiblePoint_Click(object sender, EventArgs e)
+        {
+            visiblePoint = true;
+            imageBox1.Image = newImage.PointComp(sourceImage, sourceImage1);
+            imageBox1.Size = new Size(1280, 480);
+            imageBox2.Visible = false;
+
         }
 
         private void trackBar13_Scroll(object sender, EventArgs e)

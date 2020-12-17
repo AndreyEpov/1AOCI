@@ -103,6 +103,10 @@
             this.LoadMask = new System.Windows.Forms.Button();
             this.pauseBut = new System.Windows.Forms.Button();
             this.BG_but = new System.Windows.Forms.Button();
+            this.GFTT = new System.Windows.Forms.Button();
+            this.Brisk = new System.Windows.Forms.Button();
+            this.Fast = new System.Windows.Forms.Button();
+            this.VisiblePoint = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -131,7 +135,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(658, 14);
+            this.button1.Location = new System.Drawing.Point(658, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(50, 37);
             this.button1.TabIndex = 3;
@@ -150,7 +154,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(658, 57);
+            this.button3.Location = new System.Drawing.Point(658, 45);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(50, 43);
             this.button3.TabIndex = 6;
@@ -185,7 +189,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(658, 106);
+            this.button5.Location = new System.Drawing.Point(658, 94);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(50, 44);
             this.button5.TabIndex = 10;
@@ -246,7 +250,7 @@
             "Blue",
             "Green",
             "Red"});
-            this.RGBList.Location = new System.Drawing.Point(656, 156);
+            this.RGBList.Location = new System.Drawing.Point(656, 144);
             this.RGBList.Name = "RGBList";
             this.RGBList.Size = new System.Drawing.Size(52, 49);
             this.RGBList.TabIndex = 15;
@@ -633,13 +637,13 @@
             // 
             this.LR_7.FormattingEnabled = true;
             this.LR_7.Items.AddRange(new object[] {
-            "Canny",
-            "Cell_Shading",
-            "Video"});
+            "Method Lukasa-Kanade",
+            "Find character point with use compare"});
             this.LR_7.Location = new System.Drawing.Point(15, 543);
             this.LR_7.Name = "LR_7";
             this.LR_7.Size = new System.Drawing.Size(327, 186);
             this.LR_7.TabIndex = 70;
+            this.LR_7.SelectedIndexChanged += new System.EventHandler(this.LR_7_SelectedIndexChanged);
             // 
             // trackBar13
             // 
@@ -843,7 +847,7 @@
             // 
             // LoadMask
             // 
-            this.LoadMask.Location = new System.Drawing.Point(656, 211);
+            this.LoadMask.Location = new System.Drawing.Point(656, 199);
             this.LoadMask.Name = "LoadMask";
             this.LoadMask.Size = new System.Drawing.Size(52, 42);
             this.LoadMask.TabIndex = 92;
@@ -853,7 +857,7 @@
             // 
             // pauseBut
             // 
-            this.pauseBut.Location = new System.Drawing.Point(656, 259);
+            this.pauseBut.Location = new System.Drawing.Point(656, 247);
             this.pauseBut.Name = "pauseBut";
             this.pauseBut.Size = new System.Drawing.Size(52, 42);
             this.pauseBut.TabIndex = 93;
@@ -863,7 +867,7 @@
             // 
             // BG_but
             // 
-            this.BG_but.Location = new System.Drawing.Point(656, 307);
+            this.BG_but.Location = new System.Drawing.Point(656, 295);
             this.BG_but.Name = "BG_but";
             this.BG_but.Size = new System.Drawing.Size(52, 42);
             this.BG_but.TabIndex = 94;
@@ -871,11 +875,55 @@
             this.BG_but.UseVisualStyleBackColor = true;
             this.BG_but.Click += new System.EventHandler(this.BG_but_Click);
             // 
+            // GFTT
+            // 
+            this.GFTT.Location = new System.Drawing.Point(656, 342);
+            this.GFTT.Name = "GFTT";
+            this.GFTT.Size = new System.Drawing.Size(52, 33);
+            this.GFTT.TabIndex = 95;
+            this.GFTT.Text = "GFTT";
+            this.GFTT.UseVisualStyleBackColor = true;
+            this.GFTT.Click += new System.EventHandler(this.GFTT_Click);
+            // 
+            // Brisk
+            // 
+            this.Brisk.Location = new System.Drawing.Point(656, 377);
+            this.Brisk.Name = "Brisk";
+            this.Brisk.Size = new System.Drawing.Size(53, 30);
+            this.Brisk.TabIndex = 96;
+            this.Brisk.Text = "Brisk";
+            this.Brisk.UseVisualStyleBackColor = true;
+            this.Brisk.Click += new System.EventHandler(this.Brisk_Click);
+            // 
+            // Fast
+            // 
+            this.Fast.Location = new System.Drawing.Point(656, 413);
+            this.Fast.Name = "Fast";
+            this.Fast.Size = new System.Drawing.Size(52, 31);
+            this.Fast.TabIndex = 97;
+            this.Fast.Text = "Fast";
+            this.Fast.UseVisualStyleBackColor = true;
+            this.Fast.Click += new System.EventHandler(this.Fast_Click);
+            // 
+            // VisiblePoint
+            // 
+            this.VisiblePoint.Location = new System.Drawing.Point(656, 445);
+            this.VisiblePoint.Name = "VisiblePoint";
+            this.VisiblePoint.Size = new System.Drawing.Size(52, 47);
+            this.VisiblePoint.TabIndex = 98;
+            this.VisiblePoint.Text = "Visible point";
+            this.VisiblePoint.UseVisualStyleBackColor = true;
+            this.VisiblePoint.Click += new System.EventHandler(this.VisiblePoint_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.VisiblePoint);
+            this.Controls.Add(this.Fast);
+            this.Controls.Add(this.Brisk);
+            this.Controls.Add(this.GFTT);
             this.Controls.Add(this.BG_but);
             this.Controls.Add(this.pauseBut);
             this.Controls.Add(this.LoadMask);
@@ -1046,6 +1094,10 @@
         private System.Windows.Forms.Button LoadMask;
         private System.Windows.Forms.Button pauseBut;
         private System.Windows.Forms.Button BG_but;
+        private System.Windows.Forms.Button GFTT;
+        private System.Windows.Forms.Button Brisk;
+        private System.Windows.Forms.Button Fast;
+        private System.Windows.Forms.Button VisiblePoint;
     }
 }
 
